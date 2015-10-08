@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>My Sample Project</title>
+        <script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
+        <script src="js/angular-local-storage.min.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+    </head>
+    <body ng-app="taskList" ng-controller="taskListCtrl">
+        <h1>每天坚持一件小事</h1>
+        <div id="initial-input">
+            <h2>每天想要完成的任务</h2>
+            <input type="text" id="input-task" class="input-task" ng-keyup="$event.keyCode == 13 && enterTask()">
+            <button ng-click="finishEnterTasks()">ok</button>
+        </div>
+        <div id="daily-task">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>task</th>
+                        <th ng-repeat="day in monthDays">
+                            {{ day }}
+                        </th>
+                    </tr>
+                    {{ allTasks }}
+                    <tr ng-repeat="task in allTasks">
+                        <td>{{ task.taskName }}</td>
+                        <td ng-repeat="day in monthDays" ng-switch on="task.finishCon[task.startYM][$index] || '_undefined_'">
+                            <div ng-switch-when="-">
+                                {{ task.finishCon[task.startYM][$index] }}
+                            </div>
+                            <div ng-click="updateFinishState($event)" ng-switch-when="_undefined_" data-task="task" data-task-day="day" class="">
+                                <input type="checkbox">
+                            </div>
+                            <div ng-click="updateFinishState($event)" ng-switch-default>
+
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="monthChart"></div>
+        <div id="yearChart"></div>
+    </body>
+</html>
