@@ -1,0 +1,24 @@
+.state-wrapper {
+    width: 25px;
+    height: 25px;
+}
+
+.task-state {
+    margin: 0;
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    border: none;
+}
+
+.task-unchecked {
+    background-color: #ccc;
+}
+
+.task-finished {
+    background-color: green;
+}
+
+.task-unfinished {
+    background-color: red;
+}

@@ -19,7 +19,9 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
         var monthDays = Array.apply(null, {length: monthDayCount}).map(Number.call, Number);
 
+        $scope.currentMonth = currentMonth;
         $scope.monthDays = monthDays;
+        $scope.currentYM = '' + currentYear + currentMonth;
 
         console.log(monthDays)
 
@@ -71,29 +73,52 @@ console.log('d')
 
             allTasks[startId + i] = addedTask;
         }
-        // allTasks = allTasks.concat(addedTasks)
+        
+        angular.element(allTasksInput).remove();
+
         localStorageService.set('allTasks', allTasks)
     }
 
     function updateFinishState (event) {
         var checbox = event.target;
-        var state = checbox.checked;
+        // var state = checbox.checked;
 
         var targetParentNode = checbox;
-        while('state-wrapper'.indexOf(targetParentNode.className) < 0) {
+
+        while(!targetParentNode.getAttribute('data-task')) {
             targetParentNode = targetParentNode.parentNode;
         }
 
-        var task = targetParentNode.getAttribute('data-task');
-        var taskDay = targetParentNode.getAttribute('data-task-day')
+        var state = targetParentNode.getAttribute('ng-switch-when')
+        var task = JSON.parse(targetParentNode.getAttribute('data-task'));
+        var taskDay = targetParentNode.getAttribute('data-task-day');
+        var YM = targetParentNode.getAttribute('data-task-YM');
+
+        var id = task.id;
+
+        switch (state) {
+
+            case '_undefined_':
+                allTasks[id].finishCon[YM][taskDay] = true;
+                break;
+
+            case 'true':
+                allTasks[id].finishCon[YM][taskDay] = '_false';
+                break;
+
+            case '_false':
+                allTasks[id].finishCon[YM][taskDay] = null;
+                break;
+            default:
+                break;
+
+        }
+
+        localStorageService.set('allTasks', allTasks)
 
 
-        if (state) {
-            allTasks
-        };
-
-        console.log(event.target)
     }
+
 
     $scope.allTasks = allTasks;
     $scope.enterTask = enterTask;
