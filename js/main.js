@@ -51,35 +51,31 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     }
 
     function enterTask (event) {
-console.log('d')
-        var addTaskDiv = document.getElementById('initial-input');
+
+        // var addTaskDiv = document.getElementById('initial-input');
         var addedTask = document.getElementById('input-task');
 
-        var newTask = document.createElement('div');
-        newTask.innerHTML = addedTask.value;
-        newTask.className = 'temp-task';
-        addedTask.value = '';
 
-        addTaskDiv.appendChild(newTask)
-    }
+        // var newTask = document.createElement('div');
+        // newTask.innerHTML = addedTask.value;
+        // newTask.className = 'temp-task';
+        // addedTask.value = '';
 
-    function finishEnterTasks () {
-
-        var allTasksInput = document.getElementsByClassName('temp-task');
+        // addTaskDiv.appendChild(newTask)
         var startId = allTasks.length;
-        var addedTask;
         var date = new Date();
+        var addedTaskName = addedTask.value;
+        addedTask.value = ''
 
-        for (var i=0; i<allTasksInput.length; i++) {
-            addedTask = new Task((startId + i), allTasksInput[i].innerHTML, date)
 
-            allTasks[startId + i] = addedTask;
-            console.log(allTasks)
-        }
-        
-        angular.element(allTasksInput).remove();
+        addedTask = new Task((startId), addedTaskName, date);
 
-        localStorageService.set('allTasks', allTasks)
+        // addedTask.value = ''
+        //why if set after will not work;
+        allTasks[startId] = addedTask;
+
+        localStorageService.set('allTasks', allTasks);
+
     }
 
     function updateFinishState (event) {
@@ -207,6 +203,10 @@ console.log('d')
         taskNameShow.style.display = 'block';
     }
 
+    function showCtrlPanel () {
+        document.getElementById('ctrl-panel').style.right = '0px'
+    }
+
     function findParent (child, dataProp) {
         var parentNode = child;
 
@@ -237,7 +237,6 @@ console.log('d')
     $scope.allTasks = allTasks;
 
     $scope.enterTask = enterTask;
-    $scope.finishEnterTasks = finishEnterTasks;
     $scope.updateFinishState = updateFinishState;
 
     //about io data
@@ -252,5 +251,7 @@ console.log('d')
 
     //filter
     $scope.filterEmpty = filterEmpty;
+
+    $scope.showCtrlPanel = showCtrlPanel;
 
 })

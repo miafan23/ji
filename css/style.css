@@ -1,10 +1,72 @@
+html,body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
 .invisible {
     display: none;
 }
 
+.fleft {
+    float: left;
+}
+/*.container {
+    width: 1500px;
+    margin: 0 auto;
+    overflow: hidden;
+}*/
+
+header {
+    text-align: center;
+    height: 80px;
+}
+
+.month {
+    font-size: 1000px;
+    position: fixed;
+    line-height: 800px;
+    margin: 0;
+    padding: 0;
+    z-index: -3;
+    color: #072;
+    top: 0;
+    right: 350px;
+    opacity: 0.2
+}
+
+.main-cale {
+    width: 1005px;
+    margin: 0 auto;
+}
+
+.task-name-wrapper {
+    min-width: 100px;
+    max-width: 200px;
+    text-align: center;
+}
+
+    .taskName {
+        margin: 0;
+    }
+.edit-wrapper {
+    width: 100px;
+    position: relative;
+}
+.edit-button-group {
+    position: absolute;
+    top: 0;
+    right: -100px;
+}
+
+    .edit-taskName-input {
+        width: 100px;
+    }
+
 .state-wrapper {
     width: 25px;
     height: 25px;
+    text-align: center;
 }
 
 .task-state {
@@ -16,7 +78,7 @@
 }
 
 .task-unchecked {
-    background-color: #ccc;
+    background-color: #eee;
 }
 
 .task-finished {
@@ -25,4 +87,21 @@
 
 .task-unfinished {
     background-color: red;
+}
+
+.ctrl-panel {
+    position: absolute;
+    width: 300px;
+    right: -340px;
+    top: 80px;
+    padding: 0 20px;
+    transition: right ease-out 0.4s;
+    background: #444;
+    color: #fff;
+}
+
+.hamburger {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
