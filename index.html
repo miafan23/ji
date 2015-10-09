@@ -11,18 +11,25 @@
     <body ng-app="taskList" ng-controller="taskListCtrl">
 
         <header>
-            <h1>每天坚持一件小事</h1>
+            
+            <h1>每天坚持几件小事</h1>
+            <p id="hamburger" class="hamburger" ng-click="showCtrlPanel()"><span class="hamburger-cen"></span></p>
         </header>
         <h2 class="month">{{ currentMonth }}</h2>
 
         <!-- <section class="container"> -->
 
-            <article id="daily-task" class="main-cale">
+            <article id="welcome" ng-if="showWelcome" class="welcome">
+
+                <p>欢迎使用 几 。</p>
+                <p>点击右上角的按钮可以进行一切操作</P>
+            </article>
+            <article ng-if="!showWelcome" id="daily-task" class="main-cale">
                 <table>
                     <tbody>
                         <tr>
-                            <th>task</th>
-                            <th ng-repeat="day in monthDays">
+                            <th class="task-name-head">9月</th>
+                            <th class="table-head" ng-repeat="day in monthDays">
                                 {{ day+1 }}
                             </th>
                         </tr>
@@ -41,7 +48,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td ng-if="task.id" ng-repeat="day in monthDays" ng-switch on="task.finishCon[currentYM][$index] || '_undefined_'">
+                            <td ng-repeat="day in monthDays" ng-switch on="task.finishCon[currentYM][$index] || '_undefined_'">
 
                                 <div ng-switch-when="-" class="state-wrapper">
                                     {{ task.finishCon[task.startYM][$index] }}
@@ -65,9 +72,9 @@
                 </table>
             </article>
 
-            <aside class="fleft ctrl-panel" id="ctrl-panel">
+            <aside class="fleft ctrl-panel" id="ctrl-panel" data-state="hide">
                 <div id="initial-input" >
-                    <h2>添加任务</h2>
+                    <h2 class="center">添加任务</h2>
                     <input type="text" id="input-task" class="input-task" ng-keyup="$event.keyCode == 13 && enterTask()" placeholder="按回车键以后添加下一条任务">
                 </div>
 
@@ -78,13 +85,12 @@
 
                 <div id="upload-data-wrapper">
                     <input type="file" id="input-data">
-                    <button id="upload-data" ng-click="uploadData()">上传</button>
+                    <button id="upload-data btn" ng-click="uploadData()">上传</button>
                 </div>
             </aside>
 
             <div id="monthChart"></div>
             <div id="yearChart"></div>
-            <button id="hamburger" class="hamburger" ng-click="showCtrlPanel()">fff</button>
         <!-- </section> -->
     </body>
 </html>

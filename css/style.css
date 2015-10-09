@@ -2,6 +2,7 @@ html,body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-family: "Microsoft Jhenghei"
 }
 
 .invisible {
@@ -16,12 +17,17 @@ html,body {
     margin: 0 auto;
     overflow: hidden;
 }*/
-
+.center {
+    text-align: center;
+}
 header {
     text-align: center;
     height: 80px;
 }
 
+.welcome {
+    text-align: center;
+}
 .month {
     font-size: 1000px;
     position: fixed;
@@ -40,7 +46,13 @@ header {
     margin: 0 auto;
 }
 
-.task-name-wrapper {
+/*.task-name-head {
+    width: 100px;
+}*/
+.table-head {
+    width: 50px;
+}
+.task-name-wrapper, .task-name-head {
     min-width: 100px;
     max-width: 200px;
     text-align: center;
@@ -75,6 +87,7 @@ header {
     width: 25px;
     height: 25px;
     border: none;
+    transition: background 0.2s;
 }
 
 .task-unchecked {
@@ -82,26 +95,77 @@ header {
 }
 
 .task-finished {
-    background-color: green;
+    /*background-color: green;*/
+    background: url(../img/state.png) 0 0;
 }
 
 .task-unfinished {
-    background-color: red;
+    /*background-color: #F04F47;*/
+    background: url(../img/state.png) 0 25px;
 }
 
 .ctrl-panel {
     position: absolute;
     width: 300px;
     right: -340px;
-    top: 80px;
-    padding: 0 20px;
+    top: 100px;
+    padding: 20px 20px 80px 20px;
     transition: right ease-out 0.4s;
     background: #444;
     color: #fff;
 }
 
+    .input-task {
+        height: 35px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 5px;
+        border-radius: 3px;
+        outline: 
+    }
+
+    #output-data {
+        margin: 25px 0;
+    }
+
 .hamburger {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 20px;
+    right: 40px;
+    width: 50px;
+    height: 46px;
+    cursor: pointer;
 }
+
+.hamburger-cen {
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 50px;
+    height: 5px;
+    background-color: #444;
+}
+
+    .hamburger-cen:before {
+        content: '-';
+        display: inline-block;
+        width: 50px;
+        height: 5px;
+        color: transparent;
+        background-color: #444;
+        position: absolute;
+        left: 0;
+        top: -18px;
+    }
+
+    .hamburger-cen:after {
+        content: '-';
+        display: inline-block;
+        width: 50px;
+        height: 5px;
+        color: transparent;
+        background-color: #444;
+        position: absolute;
+        left: 0;
+        bottom: -18px;
+    }

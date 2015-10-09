@@ -25,14 +25,19 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
         $scope.currentMonth = currentMonth;
         $scope.monthDays = monthDays;
         $scope.currentYM = '' + currentYear + currentMonth;
-
-        console.log(monthDays)
+        $scope.showWelcome = true;
 
         //init local storage
         if (!localStorageService.get('allTasks')) {
             localStorageService.set('allTasks', []);
+            
         }
+
         allTasks = localStorageService.get('allTasks');
+        if (allTasks.length) {
+            $scope.showWelcome = false;
+        };
+
     }
 
 
@@ -75,6 +80,9 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
         allTasks[startId] = addedTask;
 
         localStorageService.set('allTasks', allTasks);
+        if (allTasks.length === 1) {
+            $scope.showWelcome = false;
+        };
 
     }
 
@@ -140,13 +148,35 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
         r.onloadend = function (e) {
 
-            var _allTasks = JSON.parse(e.target.result);
+            // if (file.type != 'text/plain') {
+            //     alert('好像你上传的文件不对哦，请上传网站导出的文件，如果还是不行，请联系我');
+            //     return;
+            // };
+            try {
+                var _allTasks = JSON.parse(e.target.result);
+            } catch (e) {
+                alert('好像你上传的文件不对哦，请上传网站导出的文件，如果还是不行，请联系我');
+                return false
+            }
+
             angular.copy(_allTasks, allTasks);
             $scope.$apply();
             updateStorage(allTasks)
         }
 
-        r.readAsBinaryString(file)
+        r.readAsBinaryString(file);
+
+        // function checkInput (input) {
+        //     // if (!input instanceof Array) {
+        //     //     return true
+        //     // }
+        //     console.log(input[0].id)
+        //     if (input[0].id && input[0].taskName && input[0].finishCon || input[0] == []) {
+        //         return false
+        //     }
+
+        //     return true;
+        // }
     }
 
     function editTask (event) {
@@ -173,7 +203,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
         allTasks[id] = {};
 
-        updateStorage(allTasks)
+        updateStorage(allTasks);
     }
 
     function finishEdit (event) {
@@ -204,7 +234,16 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     }
 
     function showCtrlPanel () {
-        document.getElementById('ctrl-panel').style.right = '0px'
+        var cp = document.getElementById('ctrl-panel');
+        var cpState = cp.getAttribute('data-state');
+
+        if (cpState == 'hide') {
+            cp.setAttribute('data-state', 'show');
+            cp.style.right = '0px'
+        } else if (cpState == 'show') {
+            cp.setAttribute('data-state', 'hide');
+            cp.style.right = '-350px'
+        }
     }
 
     function findParent (child, dataProp) {
