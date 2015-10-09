@@ -13,7 +13,7 @@
         <header>
             <h1>每天坚持一件小事</h1>
         </header>
-        
+
         <div id="daily-task">
             <h2>{{ currentMonth }}月</h2>
             <table>
@@ -24,9 +24,19 @@
                             {{ day+1 }}
                         </th>
                     </tr>
-                    <tr ng-repeat="task in allTasks">
-                        <td>{{ task.taskName }}</td>
-                        <td ng-repeat="day in monthDays" ng-switch on="task.finishCon[currentYM][$index] || '_undefined_'">
+                    <tr ng-repeat="task in allTasks | filter: filterEmpty">
+                        {{ allTasks }}
+                        <td ng-dblclick="editTask($event)" data-task="{{ task }}">
+                            <p class="taskName">{{ task.taskName }}</p>
+
+                            <div class="edit-wrapper invisible">
+                                <input class="edit-taskName-input" type="text" value="{{ task.taskName }}">
+                                <button class="finish-edit" ng-click="finishEdit($event)">finish</button>
+                                <button class="delete-btn" ng-click="deleteTask($event)">delete</button>
+                                <button class="cancel-btn" ng-click="cancelEdit($event)">cancel</button>
+                            </div>
+                        </td>
+                        <td ng-if="task.id" ng-repeat="day in monthDays" ng-switch on="task.finishCon[currentYM][$index] || '_undefined_'">
 
                             <div ng-switch-when="-" class="state-wrapper">
                                 {{ task.finishCon[task.startYM][$index] }}
@@ -39,7 +49,6 @@
                             <div ng-click="updateFinishState($event)" ng-switch-when="true" data-task="{{ task }}" data-task-YM="{{ currentYM }}" data-task-day="{{ day }}" class="state-wrapper">
                                 <div class="task-state task-finished"></div>
                             </div>
-
                             <div ng-click="updateFinishState($event)" ng-switch-when="_false" data-task="{{ task }}" data-task-YM="{{ currentYM }}" data-task-day="{{ day }}" class="state-wrapper">
                                 <div class="task-state task-unfinished"></div>
                             </div>
@@ -55,6 +64,16 @@
             <h2>添加任务</h2>
             <input type="text" id="input-task" class="input-task" ng-keyup="$event.keyCode == 13 && enterTask()" placeholder="按回车键以后添加下一条任务，完成后点击OK">
             <button ng-click="finishEnterTasks()">ok</button>
+        </div>
+
+        <div id="output-data">
+            <button id="output-data-btn" ng-click="outputData()">导出数据</button>
+            <a download="data.txt" id="output-data-link">下载</a>
+        </div>
+
+        <div id="upload-data-wrapper">
+            <input type="file" id="input-data">
+            <button id="upload-data" ng-click="uploadData()">上传</button>
         </div>
 
         <div id="monthChart"></div>
