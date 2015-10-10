@@ -3,10 +3,21 @@
     <head>
         <meta charset="utf-8">
         <title>My Sample Project</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
         <script src="js/angular-local-storage.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-66365958-1', 'auto');
+          ga('send', 'pageview');
+
+        </script>
     </head>
     <body ng-app="taskList" ng-controller="taskListCtrl">
 
@@ -35,16 +46,16 @@
                         </tr>
                         <tr ng-repeat="task in allTasks | filter: filterEmpty">
                             <!-- {{ allTasks }} -->
-                            <td class="task-name-wrapper" ng-dblclick="editTask($event)" data-task="{{ task }}">
+                            <td class="task-name-wrapper" ng-dblclick="editTask($event)" data-task="{{ task }}" title="双击可编辑">
 
                                 <p class="taskName">{{ task.taskName }}</p>
 
                                 <div class="edit-wrapper invisible">
                                     <input class="edit-taskName-input" type="text" value="{{ task.taskName }}">
                                     <div class="edit-button-group">
-                                        <button class="finish-edit" ng-click="finishEdit($event)">fi</button>
-                                        <button class="delete-btn" ng-click="deleteTask($event)">de</button>
-                                        <button class="cancel-btn" ng-click="cancelEdit($event)">ca</button>
+                                        <i class="finish-edit fa fa-check" ng-click="finishEdit($event)"></i>
+                                        <i class="delete-btn fa fa-trash" ng-click="deleteTask($event)"></i>
+                                        <i class="cancel-btn fa fa-times" ng-click="cancelEdit($event)"></i>
                                     </div>
                                 </div>
                             </td>
@@ -73,19 +84,27 @@
             </article>
 
             <aside class="fleft ctrl-panel" id="ctrl-panel" data-state="hide">
-                <div id="initial-input" >
-                    <h2 class="center">添加任务</h2>
+                <div id="initial-input">
+                    <h2>添加任务</h2>
                     <input type="text" id="input-task" class="input-task" ng-keyup="$event.keyCode == 13 && enterTask()" placeholder="按回车键以后添加下一条任务">
                 </div>
 
                 <div id="output-data">
+                    <h2>导出数据</h2>
+                    <p>几 只将数据存储在你的本地，所以如果你更换了浏览器或者电脑，请提前将数据导出保存，然后再在新电脑上导入数据。除非有十足的把握，最好不要更改你导出的数据文件，否则可能导致导入失败。</p>
                     <button id="output-data-btn" ng-click="outputData()">导出数据</button>
                     <a download="data.txt" id="output-data-link">下载</a>
                 </div>
 
                 <div id="upload-data-wrapper">
+                    <h2>导入数据</h2>
                     <input type="file" id="input-data">
                     <button id="upload-data btn" ng-click="uploadData()">上传</button>
+                </div>
+
+                <div>
+                    <h2>反馈与建议</h2>
+                    <p>如果你有任何建议，请一定要告诉我哦！</p>我的邮箱：fiona_fanmy@163.com
                 </div>
             </aside>
 

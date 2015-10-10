@@ -53,9 +53,10 @@ header {
     width: 50px;
 }
 .task-name-wrapper, .task-name-head {
-    min-width: 100px;
+    min-width: 120px;
     max-width: 200px;
     text-align: center;
+    cursor: default;
 }
 
     .taskName {
@@ -68,11 +69,17 @@ header {
 .edit-button-group {
     position: absolute;
     top: 0;
-    right: -100px;
+    right: -70px;
 }
 
+    .edit-button-group i {
+        cursor: pointer;
+        padding: 0 3px;
+    }
+
     .edit-taskName-input {
-        width: 100px;
+        width: 120px;
+        padding-right: 70px;
     }
 
 .state-wrapper {
@@ -115,18 +122,27 @@ header {
     color: #fff;
 }
 
+    .ctrl-panel > div {
+        margin: 25px 0;
+    }
+
+    .ctrl-panel > div > h2 {
+        margin: 5px 0;
+    }
+
     .input-task {
         height: 35px;
         width: 100%;
         box-sizing: border-box;
         padding: 5px;
         border-radius: 3px;
-        outline: 
+        outline: none;
+        margin: 1em 0;
     }
 
-    #output-data {
+    /*#output-data {
         margin: 25px 0;
-    }
+    }*/
 
 .hamburger {
     position: absolute;

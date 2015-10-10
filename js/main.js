@@ -148,23 +148,19 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
         r.onloadend = function (e) {
 
-            // if (file.type != 'text/plain') {
-            //     alert('好像你上传的文件不对哦，请上传网站导出的文件，如果还是不行，请联系我');
-            //     return;
-            // };
             try {
                 var _allTasks = JSON.parse(e.target.result);
             } catch (e) {
                 alert('好像你上传的文件不对哦，请上传网站导出的文件，如果还是不行，请联系我');
                 return false
             }
-
+            
             angular.copy(_allTasks, allTasks);
             $scope.$apply();
             updateStorage(allTasks)
         }
 
-        r.readAsBinaryString(file);
+        r.readAsText(file);
 
         // function checkInput (input) {
         //     // if (!input instanceof Array) {
