@@ -26,7 +26,7 @@
             <h1>每天坚持几件小事</h1>
             <p id="hamburger" class="hamburger" ng-click="showCtrlPanel()"><span class="hamburger-cen"></span></p>
         </header>
-        <h2 class="month">{{ currentMonth }}</h2>
+        <h2 class="month">{{ currentMonth+1 }}</h2>
 
         <!-- <section class="container"> -->
 
@@ -39,7 +39,7 @@
                 <table>
                     <tbody>
                         <tr>
-                            <th class="task-name-head">9月</th>
+                            <th class="task-name-head">{{ currentMonth+1 }}月</th>
                             <th class="table-head" ng-repeat="day in monthDays">
                                 {{ day+1 }}
                             </th>
