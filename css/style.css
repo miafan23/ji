@@ -140,6 +140,10 @@ header {
         margin: 1em 0;
     }
 
+    #output-data-link:link, #output-data-link:visited, #output-data-link:hover {
+        color: #fff;
+    } 
+
     /*#output-data {
         margin: 25px 0;
     }*/

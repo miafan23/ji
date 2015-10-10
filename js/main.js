@@ -123,8 +123,20 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
     function outputData () {
         var downloadLink = document.getElementById('output-data-link');
-        downloadLink.href = saveData();
-       function saveData () {
+            downloadLink.style.display = 'inline-block'
+            
+        if (navigator.appVersion.toString().indexOf('.NET') > 0) {
+            var text = JSON.stringify(localStorageService.get('allTasks'));
+            var blob = new Blob([text]);
+            // console.log('bl')
+            downloadLink.addEventListener('click',function () {
+                window.navigator.msSaveBlob(blob, 'data.txt');
+            })
+        }
+        else {
+            downloadLink.href = saveData();
+        }
+        function saveData () {
             var textFile = null;
             var text = JSON.stringify(localStorageService.get('allTasks'));
 
@@ -136,7 +148,6 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
             }
 
             textFile = window.URL.createObjectURL(data);
-            
             return textFile;
         }
     }

@@ -8,7 +8,7 @@
         <script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
         <script src="js/angular-local-storage.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
-        <script>
+        // <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -17,7 +17,7 @@
           ga('create', 'UA-66365958-1', 'auto');
           ga('send', 'pageview');
 
-        </script>
+        // </script>
     </head>
     <body ng-app="taskList" ng-controller="taskListCtrl">
 
@@ -93,7 +93,7 @@
                     <h2>导出数据</h2>
                     <p>几 只将数据存储在你的本地，所以如果你更换了浏览器或者电脑，请提前将数据导出保存，然后再在新电脑上导入数据。除非有十足的把握，最好不要更改你导出的数据文件，否则可能导致导入失败。</p>
                     <button id="output-data-btn" ng-click="outputData()">导出数据</button>
-                    <a download="data.txt" id="output-data-link">下载</a>
+                    <a download="data.txt" id="output-data-link" class="invisible">下载</a>
                 </div>
 
                 <div id="upload-data-wrapper">
