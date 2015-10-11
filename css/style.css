@@ -140,6 +140,10 @@ header {
         margin: 1em 0;
     }
 
+    #output-data-link {
+        cursor: pointer;
+    }
+
     #output-data-link:link, #output-data-link:visited, #output-data-link:hover {
         color: #fff;
     } 
@@ -164,9 +168,14 @@ header {
     width: 50px;
     height: 5px;
     background-color: #444;
+    transition: background-color 0s ease-out 0.3s;
 }
 
-    .hamburger-cen:before {
+.hamburger-cen.active {
+    background-color: transparent;
+}
+
+    .hamburger-cen::before {
         content: '-';
         display: inline-block;
         width: 50px;
@@ -176,9 +185,18 @@ header {
         position: absolute;
         left: 0;
         top: -18px;
+        transition: top 0.3s ease-out 0.3s, transform 0.3s ease-out 0s;
     }
 
-    .hamburger-cen:after {
+    .hamburger-cen.active::before {
+        top: 0;
+        transform: rotate(45deg);
+        transition: top 0.3s ease-out 0s, transform 0.3s ease-out 0.3s;
+    }
+
+
+
+    .hamburger-cen::after {
         content: '-';
         display: inline-block;
         width: 50px;
@@ -188,4 +206,11 @@ header {
         position: absolute;
         left: 0;
         bottom: -18px;
+        transition: bottom 0.3s ease-out 0.3s, transform 0.3s ease-out 0s;
+    }
+
+    .hamburger-cen.active::after {
+        bottom: 0;
+        transform: rotate(-45deg);
+        transition: bottom 0.3s ease-out 0s, transform 0.3s ease-out 0.3s;
     }

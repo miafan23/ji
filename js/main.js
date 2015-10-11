@@ -124,7 +124,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     function outputData () {
         var downloadLink = document.getElementById('output-data-link');
             downloadLink.style.display = 'inline-block'
-            
+
         if (navigator.appVersion.toString().indexOf('.NET') > 0) {
             var text = JSON.stringify(localStorageService.get('allTasks'));
             var blob = new Blob([text]);
@@ -243,13 +243,17 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     function showCtrlPanel () {
         var cp = document.getElementById('ctrl-panel');
         var cpState = cp.getAttribute('data-state');
+        var btn = document.getElementsByClassName('hamburger-cen')[0];
+
 
         if (cpState == 'hide') {
             cp.setAttribute('data-state', 'show');
-            cp.style.right = '0px'
+            cp.style.right = '0px';
+            angular.element(btn).addClass('active')
         } else if (cpState == 'show') {
             cp.setAttribute('data-state', 'hide');
             cp.style.right = '-350px'
+            angular.element(btn).removeClass('active')
         }
     }
 
