@@ -10,12 +10,13 @@ taskList.config(function (localStorageServiceProvider) {
 taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     init()
     var allTasks;
+    var currentDate;
 
     function init (){
         //prevent select page while db click
         clearSelection();
 
-        var currentDate = new Date();
+        currentDate = new Date();
         var currentYear = currentDate.getFullYear();
         var currentMonth = currentDate.getMonth();
         var monthDayCount = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -257,6 +258,21 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
         }
     }
 
+
+    function nextMonth (currentShowMonth) {
+        // var nextMonth = $scope.currentMonth + 1;        
+        // var nextDate = new ($)
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        $scope.currentMonth = currentDate.getMonth();
+        $scope.currentYM = currentDate.getFullYear() + '' + $scope.currentMonth;
+    }
+
+    function preMonth (currentMonth) {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        $scope.currentMonth = currentDate.getMonth();
+        $scope.currentYM = currentDate.getFullYear() + '' + $scope.currentMonth;
+    }
+
     function findParent (child, dataProp) {
         var parentNode = child;
 
@@ -280,8 +296,10 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
         }
     }
 
-    function filterEmpty (item) {
-        return !(item.id === undefined)
+    function filterEmptyAndPre (item) {
+        var startYM = parseInt(item.startYM);
+        var currentYM = parseInt($scope.currentYM)
+        return !(item.id === undefined || startYM > currentYM)
     }
 
     $scope.allTasks = allTasks;
@@ -300,8 +318,12 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     $scope.cancelEdit = cancelEdit;
 
     //filter
-    $scope.filterEmpty = filterEmpty;
+    $scope.filterEmptyAndPre = filterEmptyAndPre;
 
     $scope.showCtrlPanel = showCtrlPanel;
+
+    //change month
+    $scope.nextMonth = nextMonth;
+    $scope.preMonth = preMonth;
 
 })

@@ -2,20 +2,20 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>My Sample Project</title>
+        <title>几</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
         <script src="js/angular-local-storage.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          // })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-66365958-1', 'auto');
-          ga('send', 'pageview');
+          // ga('create', 'UA-66365958-1', 'auto');
+          // ga('send', 'pageview');
 
         </script>
     </head>
@@ -39,12 +39,12 @@
                 <table>
                     <tbody>
                         <tr>
-                            <th class="task-name-head"><span>&lt;</span>{{ currentMonth+1 }}月 <span>&gt;</span></th>
+                            <th class="task-name-head"><span ng-click="preMonth(currentMonth)">&lt;</span>{{ currentMonth+1 }}月 <span ng-click="nextMonth(currentMonth)">&gt;</span></th>
                             <th class="table-head" ng-repeat="day in monthDays">
                                 {{ day+1 }}
                             </th>
                         </tr>
-                        <tr ng-repeat="task in allTasks | filter: filterEmpty">
+                        <tr ng-repeat="task in allTasks | filter: filterEmptyAndPre">
                             <!-- {{ allTasks }} -->
                             <td class="task-name-wrapper" ng-dblclick="editTask($event)" data-task="{{ task }}" title="双击可编辑">
 
@@ -62,7 +62,7 @@
                             <td ng-repeat="day in monthDays" ng-switch on="task.finishCon[currentYM][$index] || '_undefined_'">
 
                                 <div ng-switch-when="-" class="state-wrapper">
-                                    {{ task.finishCon[task.startYM][$index] }}
+                                    {{ task.finishCon[currentYM][$index] }}
                                 </div>
 
                                 <div ng-click="updateFinishState($event)" ng-switch-when="_undefined_" data-task="{{ task }}" data-task-YM="{{ currentYM }}" data-task-day="{{ day }}" class="state-wrapper">
