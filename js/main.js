@@ -286,6 +286,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     function updateStorage (allTasks) {
         localStorageService.set('allTasks', allTasks);
         $scope.showWelcome = false;
+        $scope.$apply();
     }
 
     function clearSelection() {
