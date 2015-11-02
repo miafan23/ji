@@ -99,6 +99,11 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
         var id = task.id;
 
+
+        if (!allTasks[id].finishCon[YM]) {
+            allTasks[id].finishCon[YM] = [];
+        };
+
         switch (state) {
 
             case '_undefined_':
