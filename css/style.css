@@ -41,6 +41,11 @@ header {
     opacity: 0.2
 }
 
+.year-show {
+    font-size: 14px;
+    font-weight: normal;
+}
+
 .main-cale {
     width: 1005px;
     margin: 0 auto;

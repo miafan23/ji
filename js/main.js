@@ -26,6 +26,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
         $scope.currentMonth = currentMonth;
         $scope.monthDays = monthDays;
         $scope.currentYM = '' + currentYear + currentMonth;
+        $scope.currentYear = currentYear;
         $scope.showWelcome = true;
 
         //init local storage
@@ -270,11 +271,13 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
         currentDate.setMonth(currentDate.getMonth() + 1);
         $scope.currentMonth = currentDate.getMonth();
         $scope.currentYM = currentDate.getFullYear() + '' + $scope.currentMonth;
+        $scope.currentYear = currentDate.getFullYear();
     }
 
     function preMonth (currentMonth) {
         currentDate.setMonth(currentDate.getMonth() - 1);
         $scope.currentMonth = currentDate.getMonth();
+        $scope.currentYear = currentDate.getFullYear();
         $scope.currentYM = currentDate.getFullYear() + '' + $scope.currentMonth;
     }
 
