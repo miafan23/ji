@@ -1,3 +1,15 @@
+/*****
+ * 
+ * @author fiona23 https://github.com/fiona23  fiona_fanmy@163.com
+ *
+ **/
+
+
+$(document).ready(function() {
+    $('#fullpage').fullpage();
+});
+
+
 var taskList = angular.module('taskList', ['LocalStorageModule']); 
 
 taskList.config(function (localStorageServiceProvider) {
@@ -6,6 +18,20 @@ taskList.config(function (localStorageServiceProvider) {
     .setStorageType('localStorage')
     .setNotify(true, true)
 });
+
+//protype of daily task list and long term plan
+function AddedItem () {
+    
+}
+
+// AddedItem.prototype.delete = function(all) {
+//     var id = this.id;
+
+//     var type = all[id].constructor.name
+//     all[id] = {};
+
+//     localStorageService.set('all' + type + 's', all);
+// };
 
 taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     init()
@@ -36,6 +62,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
         }
 
         allTasks = localStorageService.get('allTasks');
+        // console.log(typeof allTasks)
         if (allTasks.length) {
             $scope.showWelcome = false;
         };
@@ -336,4 +363,274 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     $scope.nextMonth = nextMonth;
     $scope.preMonth = preMonth;
 
+})
+
+
+// section_2
+taskList.controller('longTermPlan', function ($scope, localStorageService) {
+
+    var allPlans = [];
+    var currentDate;
+
+
+    function Plan (startDate, endDate, planContent) {
+        //if input is object get from localstorage
+        if (!endDate && !planContent && startDate instanceof Object) {
+            for (prop in startDate){
+                this[prop] = startDate[prop];
+            }
+
+            return;
+        }
+
+        // this.startDate = startDate;
+        // this.endDate = endDate;
+        this.content = planContent;
+
+        this.startDateYear = startDate[2];
+        this.startDateMon = startDate[0];
+        this.startDateDay = startDate[1];
+
+        this.endDateYear = endDate[2];
+        this.endDateMon = endDate[0];
+        this.endDateDay = endDate[1];
+
+        this.finishCon = 0;
+        this.finishConShow = '0';
+        this.timeThrough = 0;
+
+        //calculate time span of the plan
+        this._startDate = new Date(this.startDateYear, this.startDateMon-1, this.startDateDay);
+        this._endDate = new Date(this.endDateYear, this.endDateMon-1, this.endDateDay);
+
+        this.timeSpan = calculateTimeSpan(this._startDate, this._endDate);
+
+        var currentDate = new Date();
+        var timeThrough = calculateTimeSpan(this._startDate, currentDate);
+        this.timePassedPerc = timeThrough / this.timeSpan;
+
+        //check plan content
+        var planQuantization = checkPlanContent(planContent).planQuantization;
+        if (planQuantization) {
+            this.planQuantization = planQuantization;
+            this.unit = checkPlanContent(planContent).unit;
+        }
+    }
+
+    Plan.prototype = new AddedItem();
+    Plan.prototype.constructor = Plan;
+    // Plan.prototype.find = function (id) {
+    // }
+    Plan.prototype.addProgress = function () {
+        var id = this.id;
+
+        //finished
+        if (this.planQuantization) {
+            if (this.finishCon == this.planQuantization) {
+                return;
+            }
+
+            this.finishCon += 1;
+            this.finishConShow = this.finishCon;
+        }
+        else {
+            this.finishCon = this.finishCon >= 95 ? 100 : Math.round(this.finishCon + 5);
+            this.finishConShow = this.finishCon + '%';
+        }
+
+        this.updateBar();
+        allPlans[id] = this;
+        localStorageService.set('allPlans', allPlans);
+    }
+
+    Plan.prototype.minusProgress = function() {
+        var id = this.id;
+
+        //finished
+        if (this.planQuantization) {
+            if (this.finishCon == 0) {
+                return;
+            }
+
+            this.finishCon -= 1;
+            this.finishConShow = this.finishCon;
+        }
+        else {
+            this.finishCon = this.finishCon <= 5 ? 0 : Math.round(this.finishCon - 5);
+            this.finishConShow = this.finishCon + '%';
+        }
+
+        this.updateBar();
+        allPlans[id] = this;
+        localStorageService.set('allPlans', allPlans);
+    };
+
+    Plan.prototype.updateBar = function() {
+        var id = this.id;
+        var timeBarwidth = this.timePassedPerc * 100;
+        this.timeBarStyle = {'width': timeBarwidth + '%'};
+
+        var planBarWidth = this.planQuantization ? this.finishCon/this.planQuantization*100 : this.finishCon;
+        var planBarColor;
+
+        var finishEffe = planBarWidth / timeBarwidth;
+        if (finishEffe < 0.4) {
+            planBarColor = makeGradientColor().redColor.deep_3;
+        }
+        else if (finishEffe >=0.4 && finishEffe < 0.8) {
+            planBarColor = makeGradientColor().redColor.deep_2;
+        }
+        else if (finishEffe >=0.8 && finishEffe < 1.2) {
+            planBarColor = makeGradientColor().greenColor.deep_2;
+        }
+        else if (finishEffe >= 1.2) {
+            planBarColor = makeGradientColor().greenColor.deep_3;
+        }
+
+        this.planBarStyle = {'width': planBarWidth + '%',
+                             'background-color': planBarColor};
+
+    };
+
+    Plan.prototype.delete = function() {
+        var sure = confirm('是否确定删除');
+        if (sure) {
+            var id = this.id;
+            allPlans[id] = {};
+
+            localStorageService.set('allPlans', allPlans);
+        }
+    };
+
+
+    init();
+
+    function init () {
+
+        $( "#start-date" ).datepicker();
+        $('#end-date').datepicker();
+
+        if (!localStorageService.get('allPlans')) {
+            localStorageService.set('allPlans', []);
+            
+        }
+
+        allPlansLocal = localStorageService.get('allPlans');
+
+        for (var i=0, len=allPlansLocal.length; i<len; i++) {
+            allPlans.push(new Plan(allPlansLocal[i]));
+        }
+
+        currentDate = new Date();
+        var currentYear = currentDate.getFullYear();
+        var currentMonth = currentDate.getMonth();
+        // var monthDayCount = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        // var monthDays = Array.apply(null, {length: monthDayCount}).map(Number.call, Number);
+        $scope.currentDay = currentDate.getDate();
+        $scope.currentMonth = currentMonth;
+        // $scope.monthDays = monthDays;
+        $scope.currentYear = currentYear;
+
+        var firstDate;
+        for (var i=0, len=allPlans.length; i<len; i++){
+            //plan start date
+            firstDate = new Date(allPlans[i]._startDate);
+            allPlans[i].timeThrough = calculateTimeSpan(firstDate, currentDate);
+
+            //if planed end time have passed
+            allPlans[i].timePassedPerc = allPlans[i].timeThrough / allPlans[i].timeSpan > 1 ? 1 : allPlans[i].timeThrough / allPlans[i].timeSpan;
+            allPlans[i].updateBar();
+        }
+    }
+
+
+    function addNewPlan () {
+        var startDate = $( "#start-date" ).val().split('/');
+        var endDate = $('#end-date').val().split('/');
+        var planContent = $('#plan-content').val();
+
+        if (!checkPlanInput(startDate, endDate, planContent)) {
+            return;
+        }
+
+        var newPlan = new Plan(startDate, endDate, planContent);
+        allPlans.push(newPlan);
+        newPlan.id = allPlans.length -1;
+        newPlan.updateBar();
+        localStorageService.set('allPlans', allPlans);
+    }
+    /*
+     * auxiliary function
+     *
+     */
+
+    function calculateTimeSpan (firstDate, secondDate) {
+        var oneDay = 24*60*60*1000;
+        return Math.round(Math.abs(firstDate.getTime() - secondDate.getTime())/oneDay);
+    }
+
+    function checkPlanInput (startDate, endDate, planContent) {
+        if (!(startDate && endDate && planContent)) {
+            alert('输入不全');
+            return false;
+        };
+
+        var startDateYear = startDate[2];
+        var startDateMon = startDate[0];
+        var startDateDay = startDate[1];
+
+        var endDateYear = endDate[2];
+        var endDateMon = endDate[0];
+        var endDateDay = endDate[1];
+
+        if (!(endDateYear >= startDateYear && endDateMon >= startDateMon && endDateDay >= startDateDay)){
+            alert('日期不对')
+            return false;
+        }
+
+        return true;
+    }
+
+    function checkPlanContent (content) {
+        if (!content.match(/\d+/)) {
+            return false;
+        }
+        var planQuantization = content.match(/\d+/)[0];
+        var numIndex = content.indexOf(planQuantization) + planQuantization.length;
+        var unit = content.substring(numIndex, numIndex + 1)
+        return {
+            planQuantization: planQuantization,
+            unit: unit
+        }
+    }
+
+    function makeGradientColor () {
+
+        var redColor = {
+            deep_3: '#FF604D',
+            deep_2: '#DD764D',
+            // deep_1: '#BB8D4E'
+        }
+
+        var greenColor = {
+            deep_3: '#56D251',
+            deep_2: '#77BB50',
+            deep_1: '#BB8D4E'
+        }
+
+        return {
+            redColor: redColor,
+            greenColor: greenColor
+        }
+
+    }
+
+    function filterEmpty (item) {
+        return !(item.id === undefined)
+    }
+
+    $scope.allPlans = allPlans;
+    $scope.addNewPlan = addNewPlan;
+    $scope.filterEmpty = filterEmpty;
 })

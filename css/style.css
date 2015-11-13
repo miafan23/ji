@@ -20,7 +20,7 @@ html,body {
 .center {
     text-align: center;
 }
-header {
+h1.page-title {
     text-align: center;
     height: 80px;
 }
@@ -220,9 +220,67 @@ header {
         transition: bottom 0.3s ease-out 0s, transform 0.3s ease-out 0.3s;
     }
 
-    .change-month {
+    .btn-small {
         background-color: #eee;
         border-radius: 5px;
         opacity: 0.8;
         outline: none;
     }
+
+/*section_2*/
+.plan-progress {
+    position: relative;
+    width: 800px;
+    height: 30px;
+}
+
+.all-bar {
+    width: 100%;
+    box-sizing: border-box;
+    height: 30px;
+    border: 1px solid #999;
+    position: absolute;
+    background-color: #fff;
+}
+
+    .start-date, .end-date, .current-date {
+        position: absolute;
+        top: 30px;
+        font-size: 8px;
+    }
+
+    .start-date {
+        left: 0;
+    }
+
+    .end-date {
+        right: 0;
+    }
+
+.time-bar, .plan-bar {
+    box-sizing: border-box;
+    height: 30px;
+    position: absolute;
+    border: 1px solid #999;
+}
+
+    .current-date {
+        right: -20px;
+    }
+
+.time-bar {
+    background-color: #eee;
+}
+
+.plan-bar {
+    opacity: 0.3;
+    transition: width 0.3s;
+}
+
+.add-progress {
+    opacity: 0.2;
+}
+
+.add-progress:hover {
+    opacity: 0.6;
+}

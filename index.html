@@ -4,9 +4,14 @@
         <meta charset="utf-8">
         <title>几</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="lib/jquery.fullPage.css" />
+        <link rel="stylesheet" href="lib/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
-        <script src="js/angular-local-storage.min.js"></script>
+        <script src="lib/angular-local-storage.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/jquery.fullPage.min.js"></script>
+        <script src="lib/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script>
           // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -19,97 +24,138 @@
 
         </script>
     </head>
-    <body ng-app="taskList" ng-controller="taskListCtrl">
+    <body ng-app="taskList" >
+        <div id="fullpage" >
+            <div class="section" ng-controller="taskListCtrl">
 
-        <header>
-            
-            <h1>每天坚持几件小事<span class="year-show">{{ currentYear }}</span></h1>
-            <p id="hamburger" class="hamburger" ng-click="showCtrlPanel()"><span class="hamburger-cen"></span></p>
-        </header>
-        <h2 class="month">{{ currentMonth+1 }}</h2>
+                <header>
+                    
+                    <h1 class="page-title">每天坚持几件小事<span class="year-show">{{ currentYear }}</span></h1>
+                    <p id="hamburger" class="hamburger" ng-click="showCtrlPanel()"><span class="hamburger-cen"></span></p>
+                </header>
+                <h2 class="month">{{ currentMonth+1 }}</h2>
 
-        <!-- <section class="container"> -->
+                <!-- <section class="container"> -->
 
-            <article id="welcome" ng-if="showWelcome" class="welcome">
+                    <article id="welcome" ng-if="showWelcome" class="welcome">
 
-                <p>欢迎使用 几 。</p>
-                <p>点击右上角的按钮可以进行一切操作</P>
-            </article>
-            <article ng-if="!showWelcome" id="daily-task" class="main-cale">
-                <table>
-                    <tbody>
-                        <tr>
-                            <th class="task-name-head"><button class="change-month" ng-click="preMonth(currentMonth)">&lt;</button> {{ currentMonth+1 }}月 <button class="change-month" ng-click="nextMonth(currentMonth)">&gt;</button></th>
-                            <th class="table-head" ng-repeat="day in monthDays">
-                                {{ day+1 }}
-                            </th>
-                        </tr>
-                        <tr ng-repeat="task in allTasks | filter: filterEmptyAndPre">
-                            <!-- {{ allTasks }} -->
-                            <td class="task-name-wrapper" ng-dblclick="editTask($event)" data-task="{{ task }}" title="双击可编辑">
+                        <p>欢迎使用 几 。</p>
+                        <p>点击右上角的按钮可以进行一切操作</P>
+                    </article>
+                    <article ng-if="!showWelcome" id="daily-task" class="main-cale">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th class="task-name-head"><button class="btn-small" ng-click="preMonth(currentMonth)">&lt;</button> {{ currentMonth+1 }}月 <button class="btn-small" ng-click="nextMonth(currentMonth)">&gt;</button></th>
+                                    <th class="table-head" ng-repeat="day in monthDays">
+                                        {{ day+1 }}
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="task in allTasks | filter: filterEmptyAndPre">
+                                    <!-- {{ allTasks }} -->
+                                    <td class="task-name-wrapper" ng-dblclick="editTask($event)" data-task="{{ task }}" title="双击可编辑">
 
-                                <p class="taskName">{{ task.taskName }}</p>
+                                        <p class="taskName">{{ task.taskName }}</p>
 
-                                <div class="edit-wrapper invisible">
-                                    <input class="edit-taskName-input" type="text" value="{{ task.taskName }}">
-                                    <div class="edit-button-group">
-                                        <i class="finish-edit fa fa-check" ng-click="finishEdit($event)" title="完成"></i>
-                                        <i class="delete-btn fa fa-trash" ng-click="deleteTask($event)" title="删除"></i>
-                                        <i class="cancel-btn fa fa-times" ng-click="cancelEdit($event)" title="取消"></i>
-                                    </div>
+                                        <div class="edit-wrapper invisible">
+                                            <input class="edit-taskName-input" type="text" value="{{ task.taskName }}">
+                                            <div class="edit-button-group">
+                                                <i class="finish-edit fa fa-check" ng-click="finishEdit($event)" title="完成"></i>
+                                                <i class="delete-btn fa fa-trash" ng-click="deleteTask($event)" title="删除"></i>
+                                                <i class="cancel-btn fa fa-times" ng-click="cancelEdit($event)" title="取消"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td ng-repeat="day in monthDays" ng-switch on="task.finishCon[currentYM][$index] || '_undefined_'">
+
+                                        <div ng-switch-when="-" class="state-wrapper">
+                                            {{ task.finishCon[currentYM][$index] }}
+                                        </div>
+
+                                        <div ng-click="updateFinishState($event)" ng-switch-when="_undefined_" data-task="{{ task }}" data-task-YM="{{ currentYM }}" data-task-day="{{ day }}" class="state-wrapper">
+                                            <div class="task-state task-unchecked"></div>
+                                        </div>
+
+                                        <div ng-click="updateFinishState($event)" ng-switch-when="true" data-task="{{ task }}" data-task-YM="{{ currentYM }}" data-task-day="{{ day }}" class="state-wrapper">
+                                            <div class="task-state task-finished"></div>
+                                        </div>
+                                        <div ng-click="updateFinishState($event)" ng-switch-when="_false" data-task="{{ task }}" data-task-YM="{{ currentYM }}" data-task-day="{{ day }}" class="state-wrapper">
+                                            <div class="task-state task-unfinished"></div>
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </article>
+
+                    <aside class="fleft ctrl-panel" id="ctrl-panel" data-state="hide">
+                        <div id="initial-input">
+                            <h2>添加任务</h2>
+                            <input type="text" id="input-task" class="input-task" ng-keyup="$event.keyCode == 13 && enterTask()" placeholder="按回车键以后添加下一条任务">
+                        </div>
+
+                        <div id="output-data">
+                            <h2>导出数据</h2>
+                            <p>几 只将数据存储在你的本地，所以如果你更换了浏览器或者电脑，请提前将数据导出保存，然后再在新电脑上导入数据。如果没有十足的把握，最好不要更改你导出的数据文件，否则可能导致导入失败。</p>
+                            <button id="output-data-btn" ng-click="outputData()">导出数据</button>
+                            <a download="data.txt" id="output-data-link" class="invisible">下载</a>
+                        </div>
+
+                        <div id="upload-data-wrapper">
+                            <h2>导入数据</h2>
+                            <input type="file" id="input-data">
+                            <button id="upload-data btn" ng-click="uploadData()">上传</button>
+                        </div>
+
+                        <div>
+                            <h2>反馈与建议</h2>
+                            <p>如果你有任何建议，请一定要告诉我哦！</p>我的邮箱：fiona_fanmy@163.com
+                        </div>
+                    </aside>
+
+                    <div id="monthChart"></div>
+                    <div id="yearChart"></div>
+                <!-- </section> -->
+            </div>
+            <!-- page_1 -->
+            <div class="section" ng-controller="longTermPlan">
+                <h1 class="page-title">长期计划</h1>
+                <section>
+                    <div>
+                        <input type="text" name="date" id="start-date">
+                        <input type="text" name="date" id="end-date">
+                        <input type="text" name="" id="plan-content">
+                        <button ng-click="addNewPlan()">添加计划</button>
+                    </div>
+
+                    <div>
+                        <div ng-repeat="plan in allPlans | filter: filterEmpty">
+                            <button ng-click="plan.delete()">dele</button>
+                            <p>{{ plan.content }} / 我已完成
+                                <button class="btn-small add-progress" ng-mousedown="plan.minusProgress()">-</button>
+                                <span>{{ plan.finishConShow }}</span>
+                                <button class="btn-small add-progress" ng-mousedown="plan.addProgress()">+</button>
+                                {{ plan.unit }}
+                            </p>
+                            <div class="plan-progress" id="progress-{{ plan.id }}">
+                                <div class="all-bar">
+                                    <p class="start-date">{{ plan.startDateYear }}年{{ plan.startDateMon }}月{{ plan.startDateDay }}日</p>
+                                    <p class="end-date">{{ plan.endDateYear }}年{{ plan.endDateMon }}月{{ plan.endDateDay }}日</p>
                                 </div>
-                            </td>
-                            <td ng-repeat="day in monthDays" ng-switch on="task.finishCon[currentYM][$index] || '_undefined_'">
-
-                                <div ng-switch-when="-" class="state-wrapper">
-                                    {{ task.finishCon[currentYM][$index] }}
+                                <div class="time-bar" id="time-bar-{{ plan.id }}" ng-style="plan.timeBarStyle">
+                                    <p class="current-date">{{ currentYear }}年{{ currentMonth+1 }}月{{ currentDay }}日</p>
                                 </div>
+                                <div class="plan-bar" id="time-bar-{{ plan.id }}" ng-style="plan.planBarStyle"></div>
 
-                                <div ng-click="updateFinishState($event)" ng-switch-when="_undefined_" data-task="{{ task }}" data-task-YM="{{ currentYM }}" data-task-day="{{ day }}" class="state-wrapper">
-                                    <div class="task-state task-unchecked"></div>
-                                </div>
-
-                                <div ng-click="updateFinishState($event)" ng-switch-when="true" data-task="{{ task }}" data-task-YM="{{ currentYM }}" data-task-day="{{ day }}" class="state-wrapper">
-                                    <div class="task-state task-finished"></div>
-                                </div>
-                                <div ng-click="updateFinishState($event)" ng-switch-when="_false" data-task="{{ task }}" data-task-YM="{{ currentYM }}" data-task-day="{{ day }}" class="state-wrapper">
-                                    <div class="task-state task-unfinished"></div>
-                                </div>
-
-
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </article>
-
-            <aside class="fleft ctrl-panel" id="ctrl-panel" data-state="hide">
-                <div id="initial-input">
-                    <h2>添加任务</h2>
-                    <input type="text" id="input-task" class="input-task" ng-keyup="$event.keyCode == 13 && enterTask()" placeholder="按回车键以后添加下一条任务">
-                </div>
-
-                <div id="output-data">
-                    <h2>导出数据</h2>
-                    <p>几 只将数据存储在你的本地，所以如果你更换了浏览器或者电脑，请提前将数据导出保存，然后再在新电脑上导入数据。如果没有十足的把握，最好不要更改你导出的数据文件，否则可能导致导入失败。</p>
-                    <button id="output-data-btn" ng-click="outputData()">导出数据</button>
-                    <a download="data.txt" id="output-data-link" class="invisible">下载</a>
-                </div>
-
-                <div id="upload-data-wrapper">
-                    <h2>导入数据</h2>
-                    <input type="file" id="input-data">
-                    <button id="upload-data btn" ng-click="uploadData()">上传</button>
-                </div>
-
-                <div>
-                    <h2>反馈与建议</h2>
-                    <p>如果你有任何建议，请一定要告诉我哦！</p>我的邮箱：fiona_fanmy@163.com
-                </div>
-            </aside>
-
-            <div id="monthChart"></div>
-            <div id="yearChart"></div>
-        <!-- </section> -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- page_2 -->
+        </div>
+        <!-- all_pages -->
     </body>
 </html>
