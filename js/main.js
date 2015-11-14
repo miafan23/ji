@@ -19,24 +19,55 @@ taskList.config(function (localStorageServiceProvider) {
     .setNotify(true, true)
 });
 
+var allTasks = [];
+var allPlans = [];
+
 //protype of daily task list and long term plan
 function AddedItem () {
     
 }
 
-// AddedItem.prototype.delete = function(all) {
-//     var id = this.id;
+AddedItem.prototype.delete = function(all) {
+    var sure = confirm('确定删除吗？');
+    if (!sure) {
+        return;
+    };
 
-//     var type = all[id].constructor.name
-//     all[id] = {};
+    var id = this.id;
 
-//     localStorageService.set('all' + type + 's', all);
-// };
+    if (all === 'allPlans') {
+        allPlans[id] = {};
+        localStorageService.set(all, allPlans);
+    }
+    else if(all === 'allTasks') {
+        allTasks[id] = {};
+        localStorageService.set(all, allTasks);
+    }
+
+};
+
+
 
 taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     init()
-    var allTasks;
     var currentDate;
+
+    function Task (id, name, date) {
+        this.id = id;
+        this.taskName = name;
+        this.finishCon = {};
+
+        startYear = date.getFullYear();
+        startMonth = date.getMonth();
+
+        this.startYM = '' + startYear + startMonth
+        this.startDay = date.getDate() - 1;
+        //init finishCon: {startMonth: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']}
+        this.finishCon[this.startYM] = new Array(parseInt(this.startDay) + 1 ).join('-').split('');
+    }
+
+    Task.prototype = new AddedItem();
+    Task.prototype.constructor = Task;
 
     function init (){
         //prevent select page while db click
@@ -62,6 +93,10 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
         }
 
         allTasks = localStorageService.get('allTasks');
+        for (var i=0, len=allTasksLocal.length; i<len; i++) {
+            allTasks.push(new Task(allPlansLocal[i]));
+        }
+
         // console.log(typeof allTasks)
         if (allTasks.length) {
             $scope.showWelcome = false;
@@ -69,20 +104,6 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
     }
 
-
-    function Task (id, name, date) {
-        this.id = id;
-        this.taskName = name;
-        this.finishCon = {};
-
-        startYear = date.getFullYear();
-        startMonth = date.getMonth();
-
-        this.startYM = '' + startYear + startMonth
-        this.startDay = date.getDate() - 1;
-        //init finishCon: {startMonth: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']}
-        this.finishCon[this.startYM] = new Array(parseInt(this.startDay) + 1 ).join('-').split('');
-    }
 
     function enterTask (event) {
 
@@ -369,7 +390,6 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 // section_2
 taskList.controller('longTermPlan', function ($scope, localStorageService) {
 
-    var allPlans = [];
     var currentDate;
 
 
@@ -492,15 +512,19 @@ taskList.controller('longTermPlan', function ($scope, localStorageService) {
 
     };
 
-    Plan.prototype.delete = function() {
-        var sure = confirm('是否确定删除');
-        if (sure) {
-            var id = this.id;
-            allPlans[id] = {};
+    // Plan.prototype.delete = function() {
+    //     var sure = confirm('是否确定删除');
+    //     if (sure) {
+    //         var id = this.id;
+    //         allPlans[id] = {};
 
-            localStorageService.set('allPlans', allPlans);
-        }
-    };
+    //         localStorageService.set('allPlans', allPlans);
+    //     }
+    // };
+
+    // Plan.prototype.editFinished = function () {
+        
+    // }
 
 
     init();

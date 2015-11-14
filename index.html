@@ -62,6 +62,7 @@
                                             <div class="edit-button-group">
                                                 <i class="finish-edit fa fa-check" ng-click="finishEdit($event)" title="完成"></i>
                                                 <i class="delete-btn fa fa-trash" ng-click="deleteTask($event)" title="删除"></i>
+                                                <!-- <i class="delete-btn fa fa-trash" ng-click="deleteTask($event)" title="删除"></i> -->
                                                 <i class="cancel-btn fa fa-times" ng-click="cancelEdit($event)" title="取消"></i>
                                             </div>
                                         </div>
@@ -131,14 +132,20 @@
                     </div>
 
                     <div>
-                        <div ng-repeat="plan in allPlans | filter: filterEmpty">
-                            <button ng-click="plan.delete()">dele</button>
+                        <div ng-repeat="plan in allPlans | filter: filterEmpty" id="plan-{{ plan.id }}">
+                            
                             <p>{{ plan.content }} / 我已完成
                                 <button class="btn-small add-progress" ng-mousedown="plan.minusProgress()">-</button>
                                 <span>{{ plan.finishConShow }}</span>
                                 <button class="btn-small add-progress" ng-mousedown="plan.addProgress()">+</button>
                                 {{ plan.unit }}
                             </p>
+                            <div class="edit-wrapper">
+                                <input class="edit-plan-input" type="text" value="{{ plan.content }}">
+                                <button ng-click="plan.editFinished($event)">save</button>
+                                <button ng-click="plan.delete('allPlans')">dele</button>
+                                <button ng-click="plan.editCancel">cancel</button>
+                            </div>
                             <div class="plan-progress" id="progress-{{ plan.id }}">
                                 <div class="all-bar">
                                     <p class="start-date">{{ plan.startDateYear }}年{{ plan.startDateMon }}月{{ plan.startDateDay }}日</p>
