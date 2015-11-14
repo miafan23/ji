@@ -22,37 +22,124 @@ taskList.config(function (localStorageServiceProvider) {
 var allTasks = [];
 var allPlans = [];
 
-//protype of daily task list and long term plan
-function AddedItem () {
+
+/* 
+ * prototype of daily task list and long term plan
+ * contain followin methods:
+ * @delete() @edit() @cancelEdit() @finishEdit()
+ * 
+ */
+taskList.factory('AddedItem', function (localStorageService) {
+    function AddedItem () {
+        
+    }
+
+    AddedItem.prototype.delete = function(all) {
+        var sure = confirm('确定删除吗？');
+        if (!sure) {
+            return;
+        };
+
+        var id = this.id;
+
+        if (all === 'allPlans') {
+            allPlans[id] = {};
+            localStorageService.set(all, allPlans);
+        }
+        else if(all === 'allTasks') {
+            allTasks[id] = {};
+            localStorageService.set(all, allTasks);
+        }
+    }
+
+
+
+    AddedItem.prototype.edit = function (event, type) {
+        var target = event.target;
+        var item = $(findParent(target, 'data-' + type))
+
+        var itemShow = item.find('.item-content');
+
+        var editWrapper = item.find('.edit-wrapper');
+        var itemInput = item.find('.edit-item-input');
+
+        editWrapper.removeClass('invisible');
+        itemShow.addClass('invisible');
+    }
+
+    AddedItem.prototype.cancelEdit = function (event, type) {
+        var item = $(findParent(event.target, 'data-' + type))
+
+        var editWrapper = item.find('.edit-wrapper');
+        var itemShow = item.find('.item-content');
+
+        editWrapper.addClass('invisible');
+        itemShow.removeClass('invisible');
+        item.find('.edit-item-input').val(this.content);
+    }
+
+    AddedItem.prototype.finishEdit = function (event, type) {
+        var item = $(findParent(event.target, 'data-' + type))
+        var content = item.find('.edit-item-input').val();
+        var id = this.id;
+
+        if (!content) {
+            alert(type+'不能为空哦');
+            return;
+        };
+
+        if (type === 'task') {
+            allTasks[id].taskName = content;
+            allTasks[id].content = content;
+            localStorageService.set('allTasks', allTasks);
+        }
+        else if(type === 'plan') {
+            allPlans[id].content = content;
+            this.checkPlanContent();
+            this.updateFinishConShow();
+            this.updateBar();
+            localStorageService.set('allPlans', allPlans);
+        }
+
+
+        var editWrapper = item.find('.edit-wrapper');
+        var itemShow = item.find('.item-content');
+
+        editWrapper.addClass('invisible');
+        itemShow.removeClass('invisible');
+    }
+
+
+    function findParent (child, dataProp) {
+        var parentNode = child;
+
+        while (parentNode.getAttribute && !parentNode.getAttribute(dataProp)) {
+            parentNode = parentNode.parentNode;
+        }
+
+        return parentNode
+    }
+
+    return AddedItem;
+})
+
+
+taskList.controller('taskListCtrl', function ($scope, localStorageService, AddedItem) {
     
-}
-
-AddedItem.prototype.delete = function(all) {
-    var sure = confirm('确定删除吗？');
-    if (!sure) {
-        return;
-    };
-
-    var id = this.id;
-
-    if (all === 'allPlans') {
-        allPlans[id] = {};
-        localStorageService.set(all, allPlans);
-    }
-    else if(all === 'allTasks') {
-        allTasks[id] = {};
-        localStorageService.set(all, allTasks);
-    }
-
-};
-
-
-
-taskList.controller('taskListCtrl', function ($scope, localStorageService) {
-    init()
     var currentDate;
 
     function Task (id, name, date) {
+        //if input is object get from localstorage
+        if (!name && !date && id instanceof Object) {
+            for (prop in id){
+                this[prop] = id[prop];
+                //change taskName to content
+                this.content = id.taskName
+            }
+
+            return;
+        }
+
         this.id = id;
         this.taskName = name;
         this.finishCon = {};
@@ -69,6 +156,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     Task.prototype = new AddedItem();
     Task.prototype.constructor = Task;
 
+    init();
     function init (){
         //prevent select page while db click
         clearSelection();
@@ -92,9 +180,9 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
             
         }
 
-        allTasks = localStorageService.get('allTasks');
+        allTasksLocal = localStorageService.get('allTasks');
         for (var i=0, len=allTasksLocal.length; i<len; i++) {
-            allTasks.push(new Task(allPlansLocal[i]));
+            allTasks.push(new Task(allTasksLocal[i]));
         }
 
         // console.log(typeof allTasks)
@@ -107,16 +195,8 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
     function enterTask (event) {
 
-        // var addTaskDiv = document.getElementById('initial-input');
         var addedTask = document.getElementById('input-task');
 
-
-        // var newTask = document.createElement('div');
-        // newTask.innerHTML = addedTask.value;
-        // newTask.className = 'temp-task';
-        // addedTask.value = '';
-
-        // addTaskDiv.appendChild(newTask)
         var startId = allTasks.length;
         var date = new Date();
         var addedTaskName = addedTask.value;
@@ -228,71 +308,6 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
         r.readAsText(file);
 
-        // function checkInput (input) {
-        //     // if (!input instanceof Array) {
-        //     //     return true
-        //     // }
-        //     console.log(input[0].id)
-        //     if (input[0].id && input[0].taskName && input[0].finishCon || input[0] == []) {
-        //         return false
-        //     }
-
-        //     return true;
-        // }
-    }
-
-    function editTask (event) {
-
-        var target = event.target;
-        var taskTd = findParent(target, 'data-task');
-
-        var taskNameShow = taskTd.querySelector('.taskName');
-
-        var editWrapper = taskTd.querySelector('.edit-wrapper');
-        var taskInput = taskTd.querySelector('.edit-taskName-input');
-
-        editWrapper.style.display = 'block';
-        taskNameShow.style.display = 'none';
-
-    }
-
-    function deleteTask (event) {
-        var taskTd = findParent(event.target, 'data-task');
-
-        var task = JSON.parse(taskTd.getAttribute('data-task'))
-
-        var id = task.id;
-
-        allTasks[id] = {};
-
-        updateStorage(allTasks);
-    }
-
-    function finishEdit (event) {
-        var taskTd = findParent(event.target, 'data-task');
-        var task = JSON.parse(taskTd.getAttribute('data-task'));
-
-        var id = task.id;
-
-        allTasks[id].taskName = taskTd.querySelector('.edit-taskName-input').value;
-
-        var editWrapper = taskTd.querySelector('.edit-wrapper');
-        var taskNameShow = taskTd.querySelector('.taskName');
-
-        editWrapper.style.display = 'none';
-        taskNameShow.style.display = 'block';
-
-        updateStorage(allTasks)
-    }
-
-    function cancelEdit ($event) {
-        var taskTd = findParent(event.target, 'data-task');
-
-        var editWrapper = taskTd.querySelector('.edit-wrapper');
-        var taskNameShow = taskTd.querySelector('.taskName');
-
-        editWrapper.style.display = 'none';
-        taskNameShow.style.display = 'block';
     }
 
     function showCtrlPanel () {
@@ -369,16 +384,9 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
     $scope.outputData = outputData;
     $scope.uploadData = uploadData;
 
-    //about edit task
-    $scope.editTask = editTask;
-    $scope.finishEdit = finishEdit;
-    $scope.deleteTask = deleteTask;
-    $scope.cancelEdit = cancelEdit;
-
     //filter
     $scope.filterEmptyAndPre = filterEmptyAndPre;
 
-    $scope.showCtrlPanel = showCtrlPanel;
 
     //change month
     $scope.nextMonth = nextMonth;
@@ -388,7 +396,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService) {
 
 
 // section_2
-taskList.controller('longTermPlan', function ($scope, localStorageService) {
+taskList.controller('longTermPlan', function ($scope, localStorageService, AddedItem) {
 
     var currentDate;
 
@@ -429,18 +437,40 @@ taskList.controller('longTermPlan', function ($scope, localStorageService) {
         var timeThrough = calculateTimeSpan(this._startDate, currentDate);
         this.timePassedPerc = timeThrough / this.timeSpan;
 
-        //check plan content
-        var planQuantization = checkPlanContent(planContent).planQuantization;
-        if (planQuantization) {
-            this.planQuantization = planQuantization;
-            this.unit = checkPlanContent(planContent).unit;
-        }
+        // //check plan content
+        // var planQuantization = checkPlanContent(planContent).planQuantization;
+        // if (planQuantization) {
+        //     this.planQuantization = planQuantization;
+        //     this.unit = checkPlanContent(planContent).unit;
+        // }
     }
 
     Plan.prototype = new AddedItem();
     Plan.prototype.constructor = Plan;
     // Plan.prototype.find = function (id) {
     // }
+
+    Plan.prototype.checkPlanContent = function () {
+        var content = this.content;
+
+        if (!content.match(/\d+/)) {
+            if (this.planQuantization) {
+                delete this.planQuantization;
+                delete this.unit;
+                this.finishCon = 0;
+            };
+            return false;
+        }
+        else if (!this.planQuantization) {
+            this.finishCon = 0;
+        }
+
+        this.planQuantization = content.match(/\d+/)[0];
+        var numIndex = content.indexOf(this.planQuantization) + this.planQuantization.length;
+        this.unit = content.substring(numIndex, numIndex + 1);
+    }
+
+
     Plan.prototype.addProgress = function () {
         var id = this.id;
 
@@ -451,13 +481,14 @@ taskList.controller('longTermPlan', function ($scope, localStorageService) {
             }
 
             this.finishCon += 1;
-            this.finishConShow = this.finishCon;
+            // this.finishConShow = this.finishCon;
         }
         else {
             this.finishCon = this.finishCon >= 95 ? 100 : Math.round(this.finishCon + 5);
-            this.finishConShow = this.finishCon + '%';
+            // this.finishConShow = this.finishCon + '%';
         }
 
+        this.updateFinishConShow();
         this.updateBar();
         allPlans[id] = this;
         localStorageService.set('allPlans', allPlans);
@@ -473,17 +504,28 @@ taskList.controller('longTermPlan', function ($scope, localStorageService) {
             }
 
             this.finishCon -= 1;
-            this.finishConShow = this.finishCon;
+            // this.finishConShow = this.finishCon;
         }
         else {
             this.finishCon = this.finishCon <= 5 ? 0 : Math.round(this.finishCon - 5);
-            this.finishConShow = this.finishCon + '%';
+            // this.finishConShow = this.finishCon + '%';
         }
 
+        this.updateFinishConShow();
         this.updateBar();
         allPlans[id] = this;
         localStorageService.set('allPlans', allPlans);
     };
+
+    Plan.prototype.updateFinishConShow = function () {
+        //finished
+        if (this.planQuantization) {
+            this.finishConShow = this.finishCon;
+        }
+        else {
+            this.finishConShow = this.finishCon + '%';
+        }
+    }
 
     Plan.prototype.updateBar = function() {
         var id = this.id;
@@ -511,20 +553,6 @@ taskList.controller('longTermPlan', function ($scope, localStorageService) {
                              'background-color': planBarColor};
 
     };
-
-    // Plan.prototype.delete = function() {
-    //     var sure = confirm('是否确定删除');
-    //     if (sure) {
-    //         var id = this.id;
-    //         allPlans[id] = {};
-
-    //         localStorageService.set('allPlans', allPlans);
-    //     }
-    // };
-
-    // Plan.prototype.editFinished = function () {
-        
-    // }
 
 
     init();
@@ -566,6 +594,7 @@ taskList.controller('longTermPlan', function ($scope, localStorageService) {
             allPlans[i].timePassedPerc = allPlans[i].timeThrough / allPlans[i].timeSpan > 1 ? 1 : allPlans[i].timeThrough / allPlans[i].timeSpan;
             allPlans[i].updateBar();
         }
+
     }
 
 
@@ -579,6 +608,7 @@ taskList.controller('longTermPlan', function ($scope, localStorageService) {
         }
 
         var newPlan = new Plan(startDate, endDate, planContent);
+        newPlan.checkPlanContent();
         allPlans.push(newPlan);
         newPlan.id = allPlans.length -1;
         newPlan.updateBar();
@@ -657,4 +687,25 @@ taskList.controller('longTermPlan', function ($scope, localStorageService) {
     $scope.allPlans = allPlans;
     $scope.addNewPlan = addNewPlan;
     $scope.filterEmpty = filterEmpty;
+})
+
+taskList.controller('ctrlPanel', function ($scope, localStorageService, AddedItem) {
+    function showCtrlPanel () {
+        var cp = document.getElementById('ctrl-panel');
+        var cpState = cp.getAttribute('data-state');
+        var btn = document.getElementsByClassName('hamburger-cen')[0];
+
+
+        if (cpState == 'hide') {
+            cp.setAttribute('data-state', 'show');
+            cp.style.right = '0px';
+            angular.element(btn).addClass('active')
+        } else if (cpState == 'show') {
+            cp.setAttribute('data-state', 'hide');
+            cp.style.right = '-350px'
+            angular.element(btn).removeClass('active')
+        }
+    }
+
+    $scope.showCtrlPanel = showCtrlPanel;
 })

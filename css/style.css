@@ -164,6 +164,7 @@ h1.page-title {
     width: 50px;
     height: 46px;
     cursor: pointer;
+    z-index: 99;
 }
 
 .hamburger-cen {

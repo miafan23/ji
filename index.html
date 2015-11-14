@@ -25,13 +25,16 @@
         </script>
     </head>
     <body ng-app="taskList" >
+        <div ng-controller="ctrlPanel">
+            <p id="hamburger" class="hamburger" ng-click="showCtrlPanel()"><span class="hamburger-cen"></span></p>
+        </div>
+
         <div id="fullpage" >
             <div class="section" ng-controller="taskListCtrl">
 
                 <header>
                     
                     <h1 class="page-title">每天坚持几件小事<span class="year-show">{{ currentYear }}</span></h1>
-                    <p id="hamburger" class="hamburger" ng-click="showCtrlPanel()"><span class="hamburger-cen"></span></p>
                 </header>
                 <h2 class="month">{{ currentMonth+1 }}</h2>
 
@@ -53,17 +56,18 @@
                                 </tr>
                                 <tr ng-repeat="task in allTasks | filter: filterEmptyAndPre">
                                     <!-- {{ allTasks }} -->
-                                    <td class="task-name-wrapper" ng-dblclick="editTask($event)" data-task="{{ task }}" title="双击可编辑">
+                                    <!-- <td class="task-name-wrapper" ng-dblclick="editTask($event)" data-task="{{ task }}" title="双击可编辑"> -->
+                                    <td class="task-name-wrapper" ng-dblclick="task.edit($event, 'task')" data-task="{{ task }}" title="双击可编辑">
 
-                                        <p class="taskName">{{ task.taskName }}</p>
-
+                                        <p class="item-content taskName">{{ task.content }}</p>
                                         <div class="edit-wrapper invisible">
-                                            <input class="edit-taskName-input" type="text" value="{{ task.taskName }}">
+                                            <input class="edit-taskName-input edit-item-input" type="text" value="{{ task.taskName }}">
                                             <div class="edit-button-group">
-                                                <i class="finish-edit fa fa-check" ng-click="finishEdit($event)" title="完成"></i>
-                                                <i class="delete-btn fa fa-trash" ng-click="deleteTask($event)" title="删除"></i>
+                                                <i class="finish-edit fa fa-check" ng-click="task.finishEdit($event, 'task')" title="完成"></i>
+                                                <i class="delete-btn fa fa-trash" ng-click="task.delete('allTasks')" title="删除"></i>
                                                 <!-- <i class="delete-btn fa fa-trash" ng-click="deleteTask($event)" title="删除"></i> -->
-                                                <i class="cancel-btn fa fa-times" ng-click="cancelEdit($event)" title="取消"></i>
+                                                <i class="cancel-btn fa fa-times" ng-click="task.cancelEdit($event, 'task')" title="取消"></i>
+                                                <!-- <i class="cancel-btn fa fa-times" ng-click="cancelEdit($event)" title="取消"></i> -->
                                             </div>
                                         </div>
                                     </td>
@@ -134,18 +138,23 @@
                     <div>
                         <div ng-repeat="plan in allPlans | filter: filterEmpty" id="plan-{{ plan.id }}">
                             
-                            <p>{{ plan.content }} / 我已完成
-                                <button class="btn-small add-progress" ng-mousedown="plan.minusProgress()">-</button>
-                                <span>{{ plan.finishConShow }}</span>
-                                <button class="btn-small add-progress" ng-mousedown="plan.addProgress()">+</button>
-                                {{ plan.unit }}
-                            </p>
-                            <div class="edit-wrapper">
-                                <input class="edit-plan-input" type="text" value="{{ plan.content }}">
-                                <button ng-click="plan.editFinished($event)">save</button>
-                                <button ng-click="plan.delete('allPlans')">dele</button>
-                                <button ng-click="plan.editCancel">cancel</button>
+                            <div id="test" data-plan="{{ plan.id }}">
+                                <p>
+                                    <span ng-dblclick="plan.edit($event, 'plan')" class="item-content">{{ plan.content }}</span> / 我已完成
+                                    <button class="btn-small add-progress" ng-mousedown="plan.minusProgress()">-</button>
+                                    <span>{{ plan.finishConShow }}</span>
+                                    <button class="btn-small add-progress" ng-mousedown="plan.addProgress()">+</button>
+                                    {{ plan.unit }}
+                                </p>
+
+                                <div class="edit-wrapper invisible">
+                                    <input class="edit-plan-input edit-item-input" type="text" value="{{ plan.content }}">
+                                    <button ng-click="plan.finishEdit($event, 'plan')">save</button>
+                                    <button ng-click="plan.delete('allPlans')">dele</button>
+                                    <button ng-click="plan.cancelEdit($event, 'plan')">cancel</button>
+                                </div>
                             </div>
+                            
                             <div class="plan-progress" id="progress-{{ plan.id }}">
                                 <div class="all-bar">
                                     <p class="start-date">{{ plan.startDateYear }}年{{ plan.startDateMon }}月{{ plan.startDateDay }}日</p>
