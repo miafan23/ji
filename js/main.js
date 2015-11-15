@@ -19,8 +19,27 @@ taskList.config(function (localStorageServiceProvider) {
     .setNotify(true, true)
 });
 
-var allTasks = [];
+
+
+taskList.service('AllItem', [$rootScope, function ($rootScope) {
+    var allTasks = [];
+    // $rootScope.allTasks = allTasks;
+
+    var service = {
+        allTasks: [],
+
+        addTask: function  (task) {
+            this.allTasks.push(task);
+            $rootScope.$broadcast('allTasks.update');
+        }
+    }
+
+
+    return service;
+}])
+
 var allPlans = [];
+// var allTasks = [];
 
 
 /* 
@@ -124,10 +143,7 @@ taskList.factory('AddedItem', function (localStorageService) {
 })
 
 
-taskList.controller('taskListCtrl', function ($scope, localStorageService, AddedItem) {
-    
-    var currentDate;
-
+taskList.factory('Task', function (localStorageService, AddedItem) {
     function Task (id, name, date) {
         //if input is object get from localstorage
         if (!name && !date && id instanceof Object) {
@@ -142,6 +158,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
 
         this.id = id;
         this.taskName = name;
+        this.content = name;
         this.finishCon = {};
 
         startYear = date.getFullYear();
@@ -156,7 +173,218 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
     Task.prototype = new AddedItem();
     Task.prototype.constructor = Task;
 
-    init();
+    return Task;
+})
+
+taskList.factory('Plan', function (localStorageService, AddedItem) {
+    function Plan (startDate, endDate, planContent) {
+        //if input is object get from localstorage
+        if (!endDate && !planContent && startDate instanceof Object) {
+            for (prop in startDate){
+                this[prop] = startDate[prop];
+            }
+
+            return;
+        }
+
+        // this.startDate = startDate;
+        // this.endDate = endDate;
+        this.content = planContent;
+
+        this.startDateYear = startDate[2];
+        this.startDateMon = startDate[0];
+        this.startDateDay = startDate[1];
+
+        this.endDateYear = endDate[2];
+        this.endDateMon = endDate[0];
+        this.endDateDay = endDate[1];
+
+        this.finishCon = 0;
+        this.finishConShow = '0';
+        this.timeThrough = 0;
+
+        //calculate time span of the plan
+        this._startDate = new Date(this.startDateYear, this.startDateMon-1, this.startDateDay);
+        this._endDate = new Date(this.endDateYear, this.endDateMon-1, this.endDateDay);
+
+        this.timeSpan = calculateTimeSpan(this._startDate, this._endDate);
+
+        var currentDate = new Date();
+        var timeThrough = calculateTimeSpan(this._startDate, currentDate);
+        this.timePassedPerc = timeThrough / this.timeSpan;
+
+        // //check plan content
+        // var planQuantization = checkPlanContent(planContent).planQuantization;
+        // if (planQuantization) {
+        //     this.planQuantization = planQuantization;
+        //     this.unit = checkPlanContent(planContent).unit;
+        // }
+    }
+
+    Plan.prototype = new AddedItem();
+    Plan.prototype.constructor = Plan;
+
+    Plan.prototype.checkPlanContent = function () {
+        var content = this.content;
+
+        if (!content.match(/\d+/)) {
+            if (this.planQuantization) {
+                delete this.planQuantization;
+                delete this.unit;
+                this.finishCon = 0;
+            };
+            return false;
+        }
+        else if (!this.planQuantization) {
+            this.finishCon = 0;
+        }
+
+        this.planQuantization = content.match(/\d+/)[0];
+        var numIndex = content.indexOf(this.planQuantization) + this.planQuantization.length;
+        this.unit = content.substring(numIndex, numIndex + 1);
+    }
+
+
+    Plan.prototype.addProgress = function () {
+        var id = this.id;
+
+        //finished
+        if (this.planQuantization) {
+            if (this.finishCon == this.planQuantization) {
+                return;
+            }
+
+            this.finishCon += 1;
+            // this.finishConShow = this.finishCon;
+        }
+        else {
+            this.finishCon = this.finishCon >= 95 ? 100 : Math.round(this.finishCon + 5);
+            // this.finishConShow = this.finishCon + '%';
+        }
+
+        this.updateFinishConShow();
+        this.updateBar();
+        allPlans[id] = this;
+        localStorageService.set('allPlans', allPlans);
+    }
+
+    Plan.prototype.minusProgress = function() {
+        var id = this.id;
+
+        //finished
+        if (this.planQuantization) {
+            if (this.finishCon == 0) {
+                return;
+            }
+
+            this.finishCon -= 1;
+            // this.finishConShow = this.finishCon;
+        }
+        else {
+            this.finishCon = this.finishCon <= 5 ? 0 : Math.round(this.finishCon - 5);
+            // this.finishConShow = this.finishCon + '%';
+        }
+
+        this.updateFinishConShow();
+        this.updateBar();
+        allPlans[id] = this;
+        localStorageService.set('allPlans', allPlans);
+    };
+
+    Plan.prototype.updateFinishConShow = function () {
+        //finished
+        if (this.planQuantization) {
+            this.finishConShow = this.finishCon;
+        }
+        else {
+            this.finishConShow = this.finishCon + '%';
+        }
+    }
+
+    Plan.prototype.updateBar = function() {
+        var id = this.id;
+        var timeBarwidth = this.timePassedPerc * 100;
+        this.timeBarStyle = {'width': timeBarwidth + '%'};
+
+        var planBarWidth = this.planQuantization ? this.finishCon/this.planQuantization*100 : this.finishCon;
+        var planBarColor;
+
+        var finishEffe = planBarWidth / timeBarwidth;
+        if (finishEffe < 0.4) {
+            planBarColor = gradientColor.redColor.deep_3;
+        }
+        else if (finishEffe >=0.4 && finishEffe < 0.8) {
+            planBarColor = gradientColor.redColor.deep_2;
+        }
+        else if (finishEffe >=0.8 && finishEffe < 1.2) {
+            planBarColor = gradientColor.greenColor.deep_2;
+        }
+        else if (finishEffe >= 1.2) {
+            planBarColor = gradientColor.greenColor.deep_3;
+        }
+
+        this.planBarStyle = {'width': planBarWidth + '%',
+                             'background-color': planBarColor};
+
+    };
+
+    function calculateTimeSpan (firstDate, secondDate) {
+        var oneDay = 24*60*60*1000;
+        return Math.round(Math.abs(firstDate.getTime() - secondDate.getTime())/oneDay);
+    }
+
+    var gradientColor = {
+
+        redColor: {
+            deep_3: '#FF604D',
+            deep_2: '#DD764D',
+            // deep_1: '#BB8D4E'
+        },
+
+        greenColor: {
+            deep_3: '#56D251',
+            deep_2: '#77BB50',
+            deep_1: '#BB8D4E'
+        }
+
+    }
+
+    return Plan;
+})
+
+taskList.controller('taskListCtrl', function ($scope, localStorageService, AddedItem, Task) {
+    
+    var currentDate;
+
+    // function Task (id, name, date) {
+    //     //if input is object get from localstorage
+    //     if (!name && !date && id instanceof Object) {
+    //         for (prop in id){
+    //             this[prop] = id[prop];
+    //             //change taskName to content
+    //             this.content = id.taskName
+    //         }
+
+    //         return;
+    //     }
+
+    //     this.id = id;
+    //     this.taskName = name;
+    //     this.finishCon = {};
+
+    //     startYear = date.getFullYear();
+    //     startMonth = date.getMonth();
+
+    //     this.startYM = '' + startYear + startMonth
+    //     this.startDay = date.getDate() - 1;
+    //     //init finishCon: {startMonth: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']}
+    //     this.finishCon[this.startYM] = new Array(parseInt(this.startDay) + 1 ).join('-').split('');
+    // }
+
+    // Task.prototype = new AddedItem();
+    // Task.prototype.constructor = Task;
+
+    
     function init (){
         //prevent select page while db click
         clearSelection();
@@ -392,211 +620,15 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
     $scope.nextMonth = nextMonth;
     $scope.preMonth = preMonth;
 
+
+    init();
 })
 
 
 // section_2
-taskList.controller('longTermPlan', function ($scope, localStorageService, AddedItem) {
+taskList.controller('longTermPlan', function ($scope, localStorageService, AddedItem, Plan) {
 
     var currentDate;
-
-
-    function Plan (startDate, endDate, planContent) {
-        //if input is object get from localstorage
-        if (!endDate && !planContent && startDate instanceof Object) {
-            for (prop in startDate){
-                this[prop] = startDate[prop];
-            }
-
-            return;
-        }
-
-        // this.startDate = startDate;
-        // this.endDate = endDate;
-        this.content = planContent;
-
-        this.startDateYear = startDate[2];
-        this.startDateMon = startDate[0];
-        this.startDateDay = startDate[1];
-
-        this.endDateYear = endDate[2];
-        this.endDateMon = endDate[0];
-        this.endDateDay = endDate[1];
-
-        this.finishCon = 0;
-        this.finishConShow = '0';
-        this.timeThrough = 0;
-
-        //calculate time span of the plan
-        this._startDate = new Date(this.startDateYear, this.startDateMon-1, this.startDateDay);
-        this._endDate = new Date(this.endDateYear, this.endDateMon-1, this.endDateDay);
-
-        this.timeSpan = calculateTimeSpan(this._startDate, this._endDate);
-
-        var currentDate = new Date();
-        var timeThrough = calculateTimeSpan(this._startDate, currentDate);
-        this.timePassedPerc = timeThrough / this.timeSpan;
-
-        // //check plan content
-        // var planQuantization = checkPlanContent(planContent).planQuantization;
-        // if (planQuantization) {
-        //     this.planQuantization = planQuantization;
-        //     this.unit = checkPlanContent(planContent).unit;
-        // }
-    }
-
-    Plan.prototype = new AddedItem();
-    Plan.prototype.constructor = Plan;
-    // Plan.prototype.find = function (id) {
-    // }
-
-    Plan.prototype.checkPlanContent = function () {
-        var content = this.content;
-
-        if (!content.match(/\d+/)) {
-            if (this.planQuantization) {
-                delete this.planQuantization;
-                delete this.unit;
-                this.finishCon = 0;
-            };
-            return false;
-        }
-        else if (!this.planQuantization) {
-            this.finishCon = 0;
-        }
-
-        this.planQuantization = content.match(/\d+/)[0];
-        var numIndex = content.indexOf(this.planQuantization) + this.planQuantization.length;
-        this.unit = content.substring(numIndex, numIndex + 1);
-    }
-
-
-    Plan.prototype.addProgress = function () {
-        var id = this.id;
-
-        //finished
-        if (this.planQuantization) {
-            if (this.finishCon == this.planQuantization) {
-                return;
-            }
-
-            this.finishCon += 1;
-            // this.finishConShow = this.finishCon;
-        }
-        else {
-            this.finishCon = this.finishCon >= 95 ? 100 : Math.round(this.finishCon + 5);
-            // this.finishConShow = this.finishCon + '%';
-        }
-
-        this.updateFinishConShow();
-        this.updateBar();
-        allPlans[id] = this;
-        localStorageService.set('allPlans', allPlans);
-    }
-
-    Plan.prototype.minusProgress = function() {
-        var id = this.id;
-
-        //finished
-        if (this.planQuantization) {
-            if (this.finishCon == 0) {
-                return;
-            }
-
-            this.finishCon -= 1;
-            // this.finishConShow = this.finishCon;
-        }
-        else {
-            this.finishCon = this.finishCon <= 5 ? 0 : Math.round(this.finishCon - 5);
-            // this.finishConShow = this.finishCon + '%';
-        }
-
-        this.updateFinishConShow();
-        this.updateBar();
-        allPlans[id] = this;
-        localStorageService.set('allPlans', allPlans);
-    };
-
-    Plan.prototype.updateFinishConShow = function () {
-        //finished
-        if (this.planQuantization) {
-            this.finishConShow = this.finishCon;
-        }
-        else {
-            this.finishConShow = this.finishCon + '%';
-        }
-    }
-
-    Plan.prototype.updateBar = function() {
-        var id = this.id;
-        var timeBarwidth = this.timePassedPerc * 100;
-        this.timeBarStyle = {'width': timeBarwidth + '%'};
-
-        var planBarWidth = this.planQuantization ? this.finishCon/this.planQuantization*100 : this.finishCon;
-        var planBarColor;
-
-        var finishEffe = planBarWidth / timeBarwidth;
-        if (finishEffe < 0.4) {
-            planBarColor = makeGradientColor().redColor.deep_3;
-        }
-        else if (finishEffe >=0.4 && finishEffe < 0.8) {
-            planBarColor = makeGradientColor().redColor.deep_2;
-        }
-        else if (finishEffe >=0.8 && finishEffe < 1.2) {
-            planBarColor = makeGradientColor().greenColor.deep_2;
-        }
-        else if (finishEffe >= 1.2) {
-            planBarColor = makeGradientColor().greenColor.deep_3;
-        }
-
-        this.planBarStyle = {'width': planBarWidth + '%',
-                             'background-color': planBarColor};
-
-    };
-
-
-    init();
-
-    function init () {
-
-        $( "#start-date" ).datepicker();
-        $('#end-date').datepicker();
-
-        if (!localStorageService.get('allPlans')) {
-            localStorageService.set('allPlans', []);
-            
-        }
-
-        allPlansLocal = localStorageService.get('allPlans');
-
-        for (var i=0, len=allPlansLocal.length; i<len; i++) {
-            allPlans.push(new Plan(allPlansLocal[i]));
-        }
-
-        currentDate = new Date();
-        var currentYear = currentDate.getFullYear();
-        var currentMonth = currentDate.getMonth();
-        // var monthDayCount = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-        // var monthDays = Array.apply(null, {length: monthDayCount}).map(Number.call, Number);
-        $scope.currentDay = currentDate.getDate();
-        $scope.currentMonth = currentMonth;
-        // $scope.monthDays = monthDays;
-        $scope.currentYear = currentYear;
-
-        var firstDate;
-        for (var i=0, len=allPlans.length; i<len; i++){
-            //plan start date
-            firstDate = new Date(allPlans[i]._startDate);
-            allPlans[i].timeThrough = calculateTimeSpan(firstDate, currentDate);
-
-            //if planed end time have passed
-            allPlans[i].timePassedPerc = allPlans[i].timeThrough / allPlans[i].timeSpan > 1 ? 1 : allPlans[i].timeThrough / allPlans[i].timeSpan;
-            allPlans[i].updateBar();
-        }
-
-    }
-
 
     function addNewPlan () {
         var startDate = $( "#start-date" ).val().split('/');
@@ -646,50 +678,82 @@ taskList.controller('longTermPlan', function ($scope, localStorageService, Added
         return true;
     }
 
-    function checkPlanContent (content) {
-        if (!content.match(/\d+/)) {
-            return false;
-        }
-        var planQuantization = content.match(/\d+/)[0];
-        var numIndex = content.indexOf(planQuantization) + planQuantization.length;
-        var unit = content.substring(numIndex, numIndex + 1)
-        return {
-            planQuantization: planQuantization,
-            unit: unit
-        }
-    }
-
-    function makeGradientColor () {
-
-        var redColor = {
-            deep_3: '#FF604D',
-            deep_2: '#DD764D',
-            // deep_1: '#BB8D4E'
-        }
-
-        var greenColor = {
-            deep_3: '#56D251',
-            deep_2: '#77BB50',
-            deep_1: '#BB8D4E'
-        }
-
-        return {
-            redColor: redColor,
-            greenColor: greenColor
-        }
-
-    }
 
     function filterEmpty (item) {
         return !(item.id === undefined)
     }
+
+    /*
+     * model
+     *
+     */
+    var longTermPlanModel = {
+
+        init: function() {
+
+            $( "#start-date" ).datepicker();
+            $('#end-date').datepicker();
+
+            if (!localStorageService.get('allPlans')) {
+                localStorageService.set('allPlans', []);
+                
+            }
+
+            allPlansLocal = localStorageService.get('allPlans');
+
+            for (var i=0, len=allPlansLocal.length; i<len; i++) {
+                allPlans.push(new Plan(allPlansLocal[i]));
+            }
+
+            currentDate = new Date();
+            var currentYear = currentDate.getFullYear();
+            var currentMonth = currentDate.getMonth();
+            // var monthDayCount = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            // var monthDays = Array.apply(null, {length: monthDayCount}).map(Number.call, Number);
+            $scope.currentDay = currentDate.getDate();
+            $scope.currentMonth = currentMonth;
+            // $scope.monthDays = monthDays;
+            $scope.currentYear = currentYear;
+
+            var firstDate;
+            for (var i=0, len=allPlans.length; i<len; i++){
+                //plan start date
+                firstDate = new Date(allPlans[i]._startDate);
+                allPlans[i].timeThrough = calculateTimeSpan(firstDate, currentDate);
+
+                //if planed end time have passed
+                allPlans[i].timePassedPerc = allPlans[i].timeThrough / allPlans[i].timeSpan > 1 ? 1 : allPlans[i].timeThrough / allPlans[i].timeSpan;
+                allPlans[i].updateBar();
+            }
+        },
+
+        // gradientColor: {
+
+        //     redColor: {
+        //         deep_3: '#FF604D',
+        //         deep_2: '#DD764D',
+        //         // deep_1: '#BB8D4E'
+        //     },
+
+        //     greenColor: {
+        //         deep_3: '#56D251',
+        //         deep_2: '#77BB50',
+        //         deep_1: '#BB8D4E'
+        //     }
+
+        // }
+    }
+
+    longTermPlanModel.init();
 
     $scope.allPlans = allPlans;
     $scope.addNewPlan = addNewPlan;
     $scope.filterEmpty = filterEmpty;
 })
 
-taskList.controller('ctrlPanel', function ($scope, localStorageService, AddedItem) {
+taskList.controller('ctrlPanel', function ($scope, localStorageService, AddedItem, Task, Plan) {
+    $scope.showWelcome = true;
     function showCtrlPanel () {
         var cp = document.getElementById('ctrl-panel');
         var cpState = cp.getAttribute('data-state');
@@ -706,6 +770,36 @@ taskList.controller('ctrlPanel', function ($scope, localStorageService, AddedIte
             angular.element(btn).removeClass('active')
         }
     }
+// function addTask () {
+//     return
+// }
+    function addTask (event) {
+
+        var addedTask = document.getElementById('input-task');
+        var startId = allTasks.length;
+        var date = new Date();
+        var addedTaskName = addedTask.value;
+
+        if (!addedTaskName) {
+            alert('任务名不能为空哦');
+            return;
+        }
+
+        addedTask.value = ''
+
+        addedTask = new Task((startId), addedTaskName, date);
+
+        // addedTask.value = ''
+        //why if set after will not work;
+        allTasks[startId] = addedTask;
+
+        localStorageService.set('allTasks', allTasks);
+        if (allTasks.length === 1) {
+            $scope.showWelcome = false;
+        };
+
+    }
 
     $scope.showCtrlPanel = showCtrlPanel;
+    $scope.addTask = addTask;
 })

@@ -125,6 +125,7 @@ h1.page-title {
     transition: right ease-out 0.4s;
     background: #444;
     color: #fff;
+    z-index: 98;
 }
 
     .ctrl-panel > div {

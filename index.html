@@ -27,6 +27,45 @@
     <body ng-app="taskList" >
         <div ng-controller="ctrlPanel">
             <p id="hamburger" class="hamburger" ng-click="showCtrlPanel()"><span class="hamburger-cen"></span></p>
+            <article id="welcome" ng-if="showWelcome" class="welcome">
+
+                <p>欢迎使用 几 。</p>
+                <p>点击右上角的按钮可以进行一切操作</P>
+            </article>
+            <aside class="fleft ctrl-panel" id="ctrl-panel" data-state="hide">
+                <div id="initial-input">
+                    <div id="input-task-wrapper">
+                        <h2>添加任务</h2>
+                        <input type="text" id="input-task" class="input-task" ng-keyup="$event.keyCode == 13 && addTask()" placeholder="按回车键以后添加下一条任务">
+                    </div>
+                    <div id="input-plan-wrapper">
+                        <h2>添加计划</h2>
+                        <input type="text" name="date" id="start-date">
+                        <input type="text" name="date" id="end-date">
+                        <input type="text" name="" id="plan-content">
+                        <button ng-click="addNewPlan()">添加计划</button>
+                    </div>
+                </div>
+
+                <div id="output-data">
+                    <h2>导出数据</h2>
+                    <p>几 只将数据存储在你的本地，所以如果你更换了浏览器或者电脑，请提前将数据导出保存，然后再在新电脑上导入数据。如果没有十足的把握，最好不要更改你导出的数据文件，否则可能导致导入失败。</p>
+                    <button id="output-data-btn" ng-click="outputData()">导出数据</button>
+                    <a download="data.txt" id="output-data-link" class="invisible">下载</a>
+                </div>
+
+                <div id="upload-data-wrapper">
+                    <h2>导入数据</h2>
+                    <input type="file" id="input-data">
+                    <button id="upload-data btn" ng-click="uploadData()">上传</button>
+                </div>
+
+                <div>
+                    <h2>反馈与建议</h2>
+                    <p>如果你有任何建议，请一定要告诉我哦！</p>我的邮箱：fiona_fanmy@163.com
+                </div>
+            </aside>
+
         </div>
 
         <div id="fullpage" >
@@ -40,11 +79,12 @@
 
                 <!-- <section class="container"> -->
 
-                    <article id="welcome" ng-if="showWelcome" class="welcome">
+ <!--                    <article id="welcome" ng-if="showWelcome" class="welcome">
 
                         <p>欢迎使用 几 。</p>
                         <p>点击右上角的按钮可以进行一切操作</P>
-                    </article>
+                    </article> -->
+                    
                     <article ng-if="!showWelcome" id="daily-task" class="main-cale">
                         <table>
                             <tbody>
@@ -95,7 +135,7 @@
                         </table>
                     </article>
 
-                    <aside class="fleft ctrl-panel" id="ctrl-panel" data-state="hide">
+                    <!-- <aside class="fleft ctrl-panel" id="ctrl-panel" data-state="hide">
                         <div id="initial-input">
                             <h2>添加任务</h2>
                             <input type="text" id="input-task" class="input-task" ng-keyup="$event.keyCode == 13 && enterTask()" placeholder="按回车键以后添加下一条任务">
@@ -118,22 +158,22 @@
                             <h2>反馈与建议</h2>
                             <p>如果你有任何建议，请一定要告诉我哦！</p>我的邮箱：fiona_fanmy@163.com
                         </div>
-                    </aside>
+                    </aside> -->
 
                     <div id="monthChart"></div>
                     <div id="yearChart"></div>
                 <!-- </section> -->
-            </div>
-            <!-- page_1 -->
+            </div> <!-- page_1 -->
+            
             <div class="section" ng-controller="longTermPlan">
                 <h1 class="page-title">长期计划</h1>
                 <section>
-                    <div>
+                    <!-- <div>
                         <input type="text" name="date" id="start-date">
                         <input type="text" name="date" id="end-date">
                         <input type="text" name="" id="plan-content">
                         <button ng-click="addNewPlan()">添加计划</button>
-                    </div>
+                    </div> -->
 
                     <div>
                         <div ng-repeat="plan in allPlans | filter: filterEmpty" id="plan-{{ plan.id }}">
@@ -169,6 +209,33 @@
                         </div>
                     </div>
                 </section>
+               <!--  <aside class="fleft ctrl-panel" id="plan-ctrl-panel" >
+                    <div id="plan-initial-input">
+                        <h2>添加计划</h2>
+                        <input type="text" name="date" id="start-date" placeholder="开始日期">
+                        <input type="text" name="date" id="end-date" placeholder="结束日期">
+                        <input type="text" name="" id="plan-content">
+                        <button ng-click="addNewPlan()">添加计划</button>
+                    </div>
+
+                    <div id="output-data">
+                        <h2>导出数据</h2>
+                        <p>几 只将数据存储在你的本地，所以如果你更换了浏览器或者电脑，请提前将数据导出保存，然后再在新电脑上导入数据。如果没有十足的把握，最好不要更改你导出的数据文件，否则可能导致导入失败。</p>
+                        <button id="output-data-btn" ng-click="outputData()">导出数据</button>
+                        <a download="data.txt" id="output-data-link" class="invisible">下载</a>
+                    </div>
+
+                    <div id="upload-data-wrapper">
+                        <h2>导入数据</h2>
+                        <input type="file" id="input-data">
+                        <button id="upload-data btn" ng-click="uploadData()">上传</button>
+                    </div>
+
+                    <div>
+                        <h2>反馈与建议</h2>
+                        <p>如果你有任何建议，请一定要告诉我哦！</p>我的邮箱：fiona_fanmy@163.com
+                    </div>
+                </aside> -->
             </div>
             <!-- page_2 -->
         </div>
