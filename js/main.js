@@ -5,9 +5,7 @@
  **/
 
 
-$(document).ready(function() {
-    $('#fullpage').fullpage();
-});
+
 
 
 var taskList = angular.module('taskList', ['LocalStorageModule']); 
@@ -21,25 +19,9 @@ taskList.config(function (localStorageServiceProvider) {
 
 
 
-taskList.service('AllItem', [$rootScope, function ($rootScope) {
-    var allTasks = [];
-    // $rootScope.allTasks = allTasks;
-
-    var service = {
-        allTasks: [],
-
-        addTask: function  (task) {
-            this.allTasks.push(task);
-            $rootScope.$broadcast('allTasks.update');
-        }
-    }
-
-
-    return service;
-}])
 
 var allPlans = [];
-// var allTasks = [];
+var allTasks = [];
 
 
 /* 
@@ -352,37 +334,15 @@ taskList.factory('Plan', function (localStorageService, AddedItem) {
     return Plan;
 })
 
-taskList.controller('taskListCtrl', function ($scope, localStorageService, AddedItem, Task) {
+
+// taskList.factory('auxiliaryFunc', function () {
     
+// })
+
+taskList.controller('taskListCtrl', function ($rootScope, $scope, localStorageService, AddedItem, Task) {
+
     var currentDate;
 
-    // function Task (id, name, date) {
-    //     //if input is object get from localstorage
-    //     if (!name && !date && id instanceof Object) {
-    //         for (prop in id){
-    //             this[prop] = id[prop];
-    //             //change taskName to content
-    //             this.content = id.taskName
-    //         }
-
-    //         return;
-    //     }
-
-    //     this.id = id;
-    //     this.taskName = name;
-    //     this.finishCon = {};
-
-    //     startYear = date.getFullYear();
-    //     startMonth = date.getMonth();
-
-    //     this.startYM = '' + startYear + startMonth
-    //     this.startDay = date.getDate() - 1;
-    //     //init finishCon: {startMonth: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']}
-    //     this.finishCon[this.startYM] = new Array(parseInt(this.startDay) + 1 ).join('-').split('');
-    // }
-
-    // Task.prototype = new AddedItem();
-    // Task.prototype.constructor = Task;
 
     
     function init (){
@@ -400,7 +360,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
         $scope.monthDays = monthDays;
         $scope.currentYM = '' + currentYear + currentMonth;
         $scope.currentYear = currentYear;
-        $scope.showWelcome = true;
+        $rootScope.showWelcome = true;
 
         //init local storage
         if (!localStorageService.get('allTasks')) {
@@ -415,7 +375,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
 
         // console.log(typeof allTasks)
         if (allTasks.length) {
-            $scope.showWelcome = false;
+            $rootScope.showWelcome = false;
         };
 
     }
@@ -439,7 +399,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
 
         localStorageService.set('allTasks', allTasks);
         if (allTasks.length === 1) {
-            $scope.showWelcome = false;
+            $rootScope.showWelcome = false;
         };
 
     }
@@ -484,59 +444,59 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
     }
     
 
-    function outputData () {
-        var downloadLink = document.getElementById('output-data-link');
-            downloadLink.style.display = 'inline-block'
+    // function outputData () {
+    //     var downloadLink = document.getElementById('output-data-link');
+    //         downloadLink.style.display = 'inline-block'
 
-        if (navigator.appVersion.toString().indexOf('.NET') > 0) {
-            var text = JSON.stringify(localStorageService.get('allTasks'));
-            var blob = new Blob([text]);
-            // console.log('bl')
-            downloadLink.addEventListener('click',function () {
-                window.navigator.msSaveBlob(blob, 'data.txt');
-            })
-        }
-        else {
-            downloadLink.href = saveData();
-        }
-        function saveData () {
-            var textFile = null;
-            var text = JSON.stringify(localStorageService.get('allTasks'));
+    //     if (navigator.appVersion.toString().indexOf('.NET') > 0) {
+    //         var text = JSON.stringify(localStorageService.get('allTasks'));
+    //         var blob = new Blob([text]);
+    //         // console.log('bl')
+    //         downloadLink.addEventListener('click',function () {
+    //             window.navigator.msSaveBlob(blob, 'data.txt');
+    //         })
+    //     }
+    //     else {
+    //         downloadLink.href = saveData();
+    //     }
+    //     function saveData () {
+    //         var textFile = null;
+    //         var text = JSON.stringify(localStorageService.get('allTasks'));
 
-            var data = new Blob([text], {type: 'text/plain'});
-            // If we are replacing a previously generated file we need to
-            // manually revoke the object URL to avoid memory leaks.
-            if (textFile !== null) {
-              window.URL.revokeObjectURL(textFile);
-            }
+    //         var data = new Blob([text], {type: 'text/plain'});
+    //         // If we are replacing a previously generated file we need to
+    //         // manually revoke the object URL to avoid memory leaks.
+    //         if (textFile !== null) {
+    //           window.URL.revokeObjectURL(textFile);
+    //         }
 
-            textFile = window.URL.createObjectURL(data);
-            return textFile;
-        }
-    }
+    //         textFile = window.URL.createObjectURL(data);
+    //         return textFile;
+    //     }
+    // }
 
 
-    function uploadData () {
-        var file = document.getElementById("input-data").files[0];
-        var r = new FileReader;
+    // function uploadData () {
+    //     var file = document.getElementById("input-data").files[0];
+    //     var r = new FileReader;
 
-        r.onloadend = function (e) {
+    //     r.onloadend = function (e) {
 
-            try {
-                var _allTasks = JSON.parse(e.target.result);
-            } catch (e) {
-                alert('好像你上传的文件不对哦，请上传网站导出的文件，如果还是不行，请联系我');
-                return false
-            }
+    //         try {
+    //             var _allTasks = JSON.parse(e.target.result);
+    //         } catch (e) {
+    //             alert('好像你上传的文件不对哦，请上传网站导出的文件，如果还是不行，请联系我');
+    //             return false
+    //         }
             
-            angular.copy(_allTasks, allTasks);
-            $scope.$apply();
-            updateStorage(allTasks)
-        }
+    //         angular.copy(_allTasks, allTasks);
+    //         $scope.$apply();
+    //         updateStorage(allTasks)
+    //     }
 
-        r.readAsText(file);
+    //     r.readAsText(file);
 
-    }
+    // }
 
     function showCtrlPanel () {
         var cp = document.getElementById('ctrl-panel');
@@ -584,7 +544,7 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
 
     function updateStorage (allTasks) {
         localStorageService.set('allTasks', allTasks);
-        $scope.showWelcome = false;
+        $rootScope.showWelcome = false;
         //$scope.$apply();
     }
 
@@ -608,9 +568,9 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
     $scope.enterTask = enterTask;
     $scope.updateFinishState = updateFinishState;
 
-    //about io data
-    $scope.outputData = outputData;
-    $scope.uploadData = uploadData;
+    // //about io data
+    // $scope.outputData = outputData;
+    // $scope.uploadData = uploadData;
 
     //filter
     $scope.filterEmptyAndPre = filterEmptyAndPre;
@@ -629,23 +589,6 @@ taskList.controller('taskListCtrl', function ($scope, localStorageService, Added
 taskList.controller('longTermPlan', function ($scope, localStorageService, AddedItem, Plan) {
 
     var currentDate;
-
-    function addNewPlan () {
-        var startDate = $( "#start-date" ).val().split('/');
-        var endDate = $('#end-date').val().split('/');
-        var planContent = $('#plan-content').val();
-
-        if (!checkPlanInput(startDate, endDate, planContent)) {
-            return;
-        }
-
-        var newPlan = new Plan(startDate, endDate, planContent);
-        newPlan.checkPlanContent();
-        allPlans.push(newPlan);
-        newPlan.id = allPlans.length -1;
-        newPlan.updateBar();
-        localStorageService.set('allPlans', allPlans);
-    }
     /*
      * auxiliary function
      *
@@ -655,29 +598,6 @@ taskList.controller('longTermPlan', function ($scope, localStorageService, Added
         var oneDay = 24*60*60*1000;
         return Math.round(Math.abs(firstDate.getTime() - secondDate.getTime())/oneDay);
     }
-
-    function checkPlanInput (startDate, endDate, planContent) {
-        if (!(startDate && endDate && planContent)) {
-            alert('输入不全');
-            return false;
-        };
-
-        var startDateYear = startDate[2];
-        var startDateMon = startDate[0];
-        var startDateDay = startDate[1];
-
-        var endDateYear = endDate[2];
-        var endDateMon = endDate[0];
-        var endDateDay = endDate[1];
-
-        if (!(endDateYear >= startDateYear && endDateMon >= startDateMon && endDateDay >= startDateDay)){
-            alert('日期不对')
-            return false;
-        }
-
-        return true;
-    }
-
 
     function filterEmpty (item) {
         return !(item.id === undefined)
@@ -728,43 +648,55 @@ taskList.controller('longTermPlan', function ($scope, localStorageService, Added
             }
         },
 
-        // gradientColor: {
-
-        //     redColor: {
-        //         deep_3: '#FF604D',
-        //         deep_2: '#DD764D',
-        //         // deep_1: '#BB8D4E'
-        //     },
-
-        //     greenColor: {
-        //         deep_3: '#56D251',
-        //         deep_2: '#77BB50',
-        //         deep_1: '#BB8D4E'
-        //     }
-
-        // }
     }
 
     longTermPlanModel.init();
 
     $scope.allPlans = allPlans;
-    $scope.addNewPlan = addNewPlan;
+    // $scope.addNewPlan = addNewPlan;
     $scope.filterEmpty = filterEmpty;
+
+
 })
 
-taskList.controller('ctrlPanel', function ($scope, localStorageService, AddedItem, Task, Plan) {
-    $scope.showWelcome = true;
+taskList.controller('ctrlPanel', function ($rootScope, $scope, localStorageService, AddedItem, Task, Plan) {
+    $rootScope.showWelcome = true;
+    // console.log('a')
+    // $('#fullpage').fullpage({
+    //      anchors: ['firstPage', 'secondPage'],
+    //     verticalCentered: false,
+
+    //     afterLoad: function(anchorLink, index){
+    //         var loadedSection = $(this);
+
+    //         //using index
+    //         if(index == 1){
+    //             $rootScope.showAddTask = true;
+    //             $rootScope.showAddPlan = false;
+    //         }
+    //         if(index == 2){
+    //             $rootScope.showAddTask = false;
+    //             $rootScope.showAddPlan = true;
+    //         }
+    //     }
+    // });
+
     function showCtrlPanel () {
+        // console.log('a')
         var cp = document.getElementById('ctrl-panel');
         var cpState = cp.getAttribute('data-state');
         var btn = document.getElementsByClassName('hamburger-cen')[0];
 
 
         if (cpState == 'hide') {
+        console.log('a')
+            // 
             cp.setAttribute('data-state', 'show');
             cp.style.right = '0px';
             angular.element(btn).addClass('active')
         } else if (cpState == 'show') {
+        console.log('b')
+
             cp.setAttribute('data-state', 'hide');
             cp.style.right = '-350px'
             angular.element(btn).removeClass('active')
@@ -795,11 +727,154 @@ taskList.controller('ctrlPanel', function ($scope, localStorageService, AddedIte
 
         localStorageService.set('allTasks', allTasks);
         if (allTasks.length === 1) {
-            $scope.showWelcome = false;
+            $rootScope.showWelcome = false;
         };
 
     }
 
+
+    function addNewPlan () {
+        var startDate = $( "#start-date" ).val().split('/');
+        var endDate = $('#end-date').val().split('/');
+        var planContent = $('#plan-content').val();
+
+        if (!checkPlanInput(startDate, endDate, planContent)) {
+            return;
+        }
+
+        var newPlan = new Plan(startDate, endDate, planContent);
+        newPlan.checkPlanContent();
+        allPlans.push(newPlan);
+        newPlan.id = allPlans.length -1;
+        newPlan.updateBar();
+        localStorageService.set('allPlans', allPlans);
+
+        $( "#start-date" ).val('');
+        $('#end-date').val('');
+        $('#plan-content').val('');
+    }
+
+
+    function outputData () {
+        var downloadLink = document.getElementById('output-data-link');
+            downloadLink.style.display = 'inline-block'
+
+        if (navigator.appVersion.toString().indexOf('.NET') > 0) {
+            var text = JSON.stringify(localStorageService.get('allTasks'));
+            var blob = new Blob([text]);
+            // console.log('bl')
+            downloadLink.addEventListener('click',function () {
+                window.navigator.msSaveBlob(blob, 'data.txt');
+            })
+        }
+        else {
+            downloadLink.href = saveData();
+        }
+        function saveData () {
+            var textFile = null;
+            var allItem = {
+                allTasks: localStorageService.get('allTasks'),
+                allPlans: localStorageService.get('allPlans')
+            }
+            // var text = JSON.stringify(localStorageService.get('allTasks'));
+            var text = JSON.stringify(allItem);
+
+            var data = new Blob([text], {type: 'text/plain'});
+            // If we are replacing a previously generated file we need to
+            // manually revoke the object URL to avoid memory leaks.
+            if (textFile !== null) {
+              window.URL.revokeObjectURL(textFile);
+            }
+
+            textFile = window.URL.createObjectURL(data);
+            return textFile;
+        }
+    }
+
+
+    function uploadData () {
+        var file = document.getElementById("input-data").files[0];
+        var r = new FileReader;
+
+        r.onloadend = function (e) {
+
+            try {
+                // var _allTasks = JSON.parse(e.target.result);
+                var _allItems = JSON.parse(e.target.result);
+            } catch (e) {
+                alert('好像你上传的文件不对哦，请上传网站导出的文件，如果还是不行，请联系我');
+                return false
+            }
+            
+            // angular.copy(_allTasks, allTasks);
+
+            //向下兼容
+            if (!_allItems.allTasks && !_allItems.allPlans) {
+                angular.copy(_allItems, allTasks);
+            }
+            else {
+                angular.copy(_allItems.allTasks, allTasks);
+                angular.copy(_allItems.allPlans, allPlans);
+            }
+            
+            localStorageService.set('allTasks', allTasks);
+            $rootScope.showWelcome = false;
+            $scope.$apply();
+        }
+
+        r.readAsText(file);
+    }
+
+
     $scope.showCtrlPanel = showCtrlPanel;
     $scope.addTask = addTask;
+    $scope.addNewPlan = addNewPlan;
+        //about io data
+    $scope.outputData = outputData;
+    $scope.uploadData = uploadData;
+
+})
+
+
+function checkPlanInput (startDate, endDate, planContent) {
+    if (!(startDate && endDate && planContent)) {
+        alert('输入不全');
+        return false;
+    };
+
+    var startDateYear = startDate[2];
+    var startDateMon = startDate[0];
+    var startDateDay = startDate[1];
+
+    var endDateYear = endDate[2];
+    var endDateMon = endDate[0];
+    var endDateDay = endDate[1];
+
+    if (!(endDateYear >= startDateYear && endDateMon >= startDateMon && endDateDay >= startDateDay)){
+        alert('日期不对')
+        return false;
+    }
+
+    return true;
+}
+
+$(document).ready(function() {
+    $('#fullpage').fullpage({
+        anchors: ['firstPage', 'secondPage'],
+        verticalCentered: false,
+
+        afterLoad: function(anchorLink, index){
+            var loadedSection = $(this);
+
+            //using index
+            if(index == 1){
+                $('#input-task-wrapper').css('display', 'block');
+                $('#input-plan-wrapper').css('display', 'none')
+            }
+            if(index == 2){
+                $('#input-task-wrapper').css('display', 'none');
+                $('#input-plan-wrapper').css('display', 'block');
+            }
+        }
+    });
 })

@@ -42,8 +42,7 @@
                         <h2>添加计划</h2>
                         <input type="text" name="date" id="start-date">
                         <input type="text" name="date" id="end-date">
-                        <input type="text" name="" id="plan-content">
-                        <button ng-click="addNewPlan()">添加计划</button>
+                        <input type="text" name="" class="input-task" id="plan-content" placeholder="试试输入'看20本书'和'看书'的区别" ng-keyup="$event.keyCode == 13 && addNewPlan()">
                     </div>
                 </div>
 
@@ -69,11 +68,11 @@
         </div>
 
         <div id="fullpage" >
-            <div class="section" ng-controller="taskListCtrl">
+            <div class="section" ng-controller="taskListCtrl" >
 
                 <header>
                     
-                    <h1 class="page-title">每天坚持几件小事<span class="year-show">{{ currentYear }}</span></h1>
+                    <h1 class="page-title">每天坚持几件小事 {{ showWelcome }}<span class="year-show">{{ currentYear }}</span></h1>
                 </header>
                 <h2 class="month">{{ currentMonth+1 }}</h2>
 
@@ -85,7 +84,7 @@
                         <p>点击右上角的按钮可以进行一切操作</P>
                     </article> -->
                     
-                    <article ng-if="!showWelcome" id="daily-task" class="main-cale">
+                    <article id="daily-task" class="main-cale"  ng-if="!showWelcome">
                         <table>
                             <tbody>
                                 <tr>
@@ -99,7 +98,7 @@
                                     <!-- <td class="task-name-wrapper" ng-dblclick="editTask($event)" data-task="{{ task }}" title="双击可编辑"> -->
                                     <td class="task-name-wrapper" ng-dblclick="task.edit($event, 'task')" data-task="{{ task }}" title="双击可编辑">
 
-                                        <p class="item-content taskName">{{ task.content }}</p>
+                                        <p class="item-content taskName">{{ task.taskName }}</p>
                                         <div class="edit-wrapper invisible">
                                             <input class="edit-taskName-input edit-item-input" type="text" value="{{ task.taskName }}">
                                             <div class="edit-button-group">
@@ -167,32 +166,27 @@
             
             <div class="section" ng-controller="longTermPlan">
                 <h1 class="page-title">长期计划</h1>
-                <section>
-                    <!-- <div>
-                        <input type="text" name="date" id="start-date">
-                        <input type="text" name="date" id="end-date">
-                        <input type="text" name="" id="plan-content">
-                        <button ng-click="addNewPlan()">添加计划</button>
-                    </div> -->
-
-                    <div>
-                        <div ng-repeat="plan in allPlans | filter: filterEmpty" id="plan-{{ plan.id }}">
+                <section class="main-cale" ng-if="!showWelcome">
+                    <!-- <div> -->
+                        <div class="plan-line" ng-repeat="plan in allPlans | filter: filterEmpty" id="plan-{{ plan.id }}">
                             
-                            <div id="test" data-plan="{{ plan.id }}">
-                                <p>
+                            <div data-plan="{{ plan.id }}">
+                                <div>
+                                    <div class="edit-wrapper invisible plan-edit-group">
+                                        <input class="edit-plan-input edit-item-input" type="text" value="{{ plan.content }}">
+                                        <div class="edit-button-group">
+                                            <i class="finish-edit fa fa-check" ng-click="plan.finishEdit($event, 'plan')"></i>
+                                            <i class="delete-btn fa fa-trash" ng-click="plan.delete('allPlans')"></i>
+                                            <i class="cancel-btn fa fa-times" ng-click="plan.cancelEdit($event, 'plan')"></i>
+                                        </div>
+                                    </div>
                                     <span ng-dblclick="plan.edit($event, 'plan')" class="item-content">{{ plan.content }}</span> / 我已完成
                                     <button class="btn-small add-progress" ng-mousedown="plan.minusProgress()">-</button>
                                     <span>{{ plan.finishConShow }}</span>
                                     <button class="btn-small add-progress" ng-mousedown="plan.addProgress()">+</button>
                                     {{ plan.unit }}
-                                </p>
-
-                                <div class="edit-wrapper invisible">
-                                    <input class="edit-plan-input edit-item-input" type="text" value="{{ plan.content }}">
-                                    <button ng-click="plan.finishEdit($event, 'plan')">save</button>
-                                    <button ng-click="plan.delete('allPlans')">dele</button>
-                                    <button ng-click="plan.cancelEdit($event, 'plan')">cancel</button>
                                 </div>
+
                             </div>
                             
                             <div class="plan-progress" id="progress-{{ plan.id }}">
@@ -207,37 +201,10 @@
 
                             </div>
                         </div>
-                    </div>
+                    <!-- </div> -->
                 </section>
-               <!--  <aside class="fleft ctrl-panel" id="plan-ctrl-panel" >
-                    <div id="plan-initial-input">
-                        <h2>添加计划</h2>
-                        <input type="text" name="date" id="start-date" placeholder="开始日期">
-                        <input type="text" name="date" id="end-date" placeholder="结束日期">
-                        <input type="text" name="" id="plan-content">
-                        <button ng-click="addNewPlan()">添加计划</button>
-                    </div>
-
-                    <div id="output-data">
-                        <h2>导出数据</h2>
-                        <p>几 只将数据存储在你的本地，所以如果你更换了浏览器或者电脑，请提前将数据导出保存，然后再在新电脑上导入数据。如果没有十足的把握，最好不要更改你导出的数据文件，否则可能导致导入失败。</p>
-                        <button id="output-data-btn" ng-click="outputData()">导出数据</button>
-                        <a download="data.txt" id="output-data-link" class="invisible">下载</a>
-                    </div>
-
-                    <div id="upload-data-wrapper">
-                        <h2>导入数据</h2>
-                        <input type="file" id="input-data">
-                        <button id="upload-data btn" ng-click="uploadData()">上传</button>
-                    </div>
-
-                    <div>
-                        <h2>反馈与建议</h2>
-                        <p>如果你有任何建议，请一定要告诉我哦！</p>我的邮箱：fiona_fanmy@163.com
-                    </div>
-                </aside> -->
             </div>
-            <!-- page_2 -->
+            <!-- page_2_end-->
         </div>
         <!-- all_pages -->
     </body>
