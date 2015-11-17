@@ -197,7 +197,7 @@ taskList.factory('Plan', function (localStorageService, AddedItem) {
         var currentDate = new Date();
         currentDate.setHours(0,0,0,0);
 
-        var timeThrough = calculateTimeSpan(this._startDate, currentDate);
+        var timeThrough = calculateTimeSpan(this._startDate, currentDate) < 0 ? 0 : calculateTimeSpan(this._startDate, currentDate);
         this.timePassedPerc = timeThrough / this.timeSpan;
 
         // //check plan content
@@ -356,7 +356,13 @@ taskList.factory('Plan', function (localStorageService, AddedItem) {
         var planBarColor;
 
         var finishEffe = planBarWidth / timeBarwidth;
-        if (finishEffe < 0.4) {
+
+        console.log(finishEffe)
+
+        if (finishEffe <= 0) {
+            planBarColor = gradientColor.greenColor.deep_3;
+        } 
+        else if (finishEffe > 0 && finishEffe < 0.4) {
             planBarColor = gradientColor.redColor.deep_3;
         }
         else if (finishEffe >=0.4 && finishEffe < 0.8) {
@@ -384,7 +390,7 @@ taskList.factory('Plan', function (localStorageService, AddedItem) {
             secondDate = new Date(secondDate);
         };
 
-        return Math.round(Math.abs(firstDate.getTime() - secondDate.getTime())/oneDay);
+        return Math.round((firstDate.getTime() - secondDate.getTime())/oneDay);
     }
 
     var gradientColor = {
