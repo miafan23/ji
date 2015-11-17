@@ -272,10 +272,12 @@ h1.page-title {
         top: 30px;
         font-size: 8px;
         background-color: #fff;
+        min-width: 95px;
     }
 
     .start-date {
         left: 0;
+        z-index: 2;
     }
 
     .end-date {
@@ -284,6 +286,12 @@ h1.page-title {
         cursor: pointer;
     }
 
+    .current-date {
+        right: -45px;
+        z-index: 4;
+    }
+
+
 .time-bar, .plan-bar {
     box-sizing: border-box;
     height: 30px;
@@ -291,9 +299,7 @@ h1.page-title {
     border: 1px solid #999;
 }
 
-    .current-date {
-        right: -20px;
-    }
+
 
 .time-bar {
     background-color: #eee;
@@ -332,4 +338,8 @@ h1.page-title {
 #start-date, #end-date {
     width: 80px;
     display: inline-block;
+}
+
+.item-content {
+    cursor: default;
 }

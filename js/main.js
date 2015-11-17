@@ -315,24 +315,18 @@ taskList.factory('Plan', function (localStorageService, AddedItem) {
 
         var newEndDate = event.target.value.split('/');
 
-        var endDateYear = newEndDate[2];
-        var endDateMon = newEndDate[0];
-        var endDateDay = newEndDate[1];
-
+        var endDate = new Date(newEndDate[2], newEndDate[0]-1, newEndDate[1])
         var currentDate = new Date();
-        var currentYear = currentDate.getFullYear();
-        var currentMonth = currentDate.getMonth();
-        var currentDay = currentDate.getDate();
 
-        if (!(endDateYear >= currentYear && endDateMon >= currentMonth && endDateDay >= currentDay)){
-            alert('完成日期不能在今天以前哦')
+        if (endDate < currentDate){
+            alert('完成日期不能在今天以前哦');
             return false;
         }
 
-        this.endDateYear = endDateYear;
-        this.endDateMon = endDateMon;
-        this.endDateDay = endDateDay;
-        this._endDate = new Date(endDateYear, endDateMon-1, endDateDay);
+        this.endDateYear = newEndDate[2];
+        this.endDateMon = newEndDate[0];
+        this.endDateDay = newEndDate[1];
+        this._endDate = endDate;
 
         this.timeSpan = calculateTimeSpan(this._startDate, this._endDate);
         this.timePassedPerc = this.timeThrough / this.timeSpan;
@@ -835,40 +829,16 @@ taskList.controller('ctrlPanel', function ($rootScope, $scope, localStorageServi
 
 function checkPlanInput (startDate, endDate, planContent) {
     if (!(startDate && endDate && planContent)) {
-        alert('输入不全');
+        alert('请输入完整哦');
         return false;
     };
 
-    var startDateYear = startDate[2];
-    var startDateMon = startDate[0];
-    var startDateDay = startDate[1];
+    var startDate = new Date(startDate[2], startDate[0]-1, startDate[1]);
 
-    var startDate = new Date(startDateYear, startDateMon-1, startDateDay);
-
-    var endDateYear = endDate[2];
-    var endDateMon = endDate[0];
-    var endDateDay = endDate[1];
-
-    var endDate = new Date(endDateYear, endDateMon-1, endDateDay)
+    var endDate = new Date(endDate[2], endDate[0]-1, endDate[1])
 
     var currentDate = new Date();
-    var currentYear = currentDate.getFullYear();
-    var currentMonth = currentDate.getMonth();
-    var currentDay = currentDate.getDate();
 
-    // if (!(endDateYear >= startDateYear && endDateMon >= startDateMon && endDateDay >= startDateDay)){
-    //     alert('完成日期必须在开始日期之后哦')
-    //     return false;
-    // }
-
-    // if (!(endDateYear >= currentYear && endDateMon >= currentMonth && endDateDay >= currentDay)){
-    //     alert('完成日期不能在今天以前哦')
-    //     return false;
-    // }
-    console.log(endDate)
-    console.log(startDate)
-    console.log(currentDate)
-console.log(endDate < startDate)
     if (endDate < startDate) {
         alert('完成日期必须在开始日期之后哦')
         return false;
