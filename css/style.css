@@ -2,16 +2,16 @@ html,body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    font-family: "Microsoft Jhenghei"
+    font-family: "Microsoft Jhenghei";
 }
 
 .invisible {
     display: none;
 }
 
-.fleft {
+/*.fleft {
     float: left;
-}
+}*/
 /*.container {
     width: 1500px;
     margin: 0 auto;
@@ -23,6 +23,11 @@ html,body {
 h1.page-title {
     text-align: center;
     height: 80px;
+    margin: 0;
+}
+
+.page-wrapper {
+    padding: 50px 0;
 }
 
 .welcome {
@@ -40,6 +45,7 @@ h1.page-title {
     z-index: -3;
     color: #072;
     top: 0;
+    bottom: 0;
     right: 350px;
     opacity: 0.2
 }
@@ -122,14 +128,27 @@ h1.page-title {
 .ctrl-panel {
     position: absolute;
     width: 300px;
-    right: -340px;
+    right: 0;
     top: 100px;
     padding: 20px 20px 80px 20px;
-    transition: right ease-out 0.4s;
+    transition: transform ease-out 0.4s;
     background: #444;
     color: #fff;
     z-index: 98;
+    transform: translate(340px, 0);
+    -ms-transform: translate(340px, 0);       /* IE 9 */
+    -webkit-transform: translate(340px, 0);   /* Safari and Chrome */
+    -o-transform: translate(340px, 0);        /* Opera */
+    -moz-transform: translate(340px, 0);      /* Firefox */
 }
+
+    .ctrl-panel.show-ctrl {
+        transform: translate(0, 0);
+        -ms-transform: translate(0, 0);       /* IE 9 */
+        -webkit-transform: translate(0, 0);   /* Safari and Chrome */
+        -o-transform: translate(0, 0);        /* Opera */
+        -moz-transform: translate(0, 0);      /* Firefox */
+    }
 
     .ctrl-panel > div {
         margin: 25px 0;
@@ -149,12 +168,12 @@ h1.page-title {
         margin: 1em 0;
     }
 
-    #output-data-link {
+    .cp-link {
         cursor: pointer;
     }
 
-    #output-data-link:link, #output-data-link:visited, #output-data-link:hover {
-        color: #fff;
+    .cp-link:link, .cp-link:visited, .cp-link:hover {
+        color: #c0deab;
     } 
 
     /*#output-data {
@@ -261,6 +280,8 @@ h1.page-title {
 
     .end-date {
         right: 0;
+        z-index: 3;
+        cursor: pointer;
     }
 
 .time-bar, .plan-bar {

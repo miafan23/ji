@@ -3,6 +3,9 @@
     <head>
         <meta charset="utf-8">
         <title>几</title>
+        <meta name="description" content="几， 一个帮你养成好习惯的小网站">
+        <meta name="keywords" content="习惯 计划 安排 webapp">
+        <meta name="author" content="fiona23">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="lib/jquery.fullPage.css" />
         <link rel="stylesheet" href="lib/jquery-ui.min.css">
@@ -10,17 +13,18 @@
         <script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
         <script src="lib/angular-local-storage.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/jQuery-slimScroll.js"></script>
         <script type="text/javascript" src="lib/jquery.fullPage.min.js"></script>
         <script src="lib/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script>
-          // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          // })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          // ga('create', 'UA-66365958-1', 'auto');
-          // ga('send', 'pageview');
+          ga('create', 'UA-66365958-1', 'auto');
+          ga('send', 'pageview');
 
         </script>
     </head>
@@ -31,6 +35,7 @@
 
                 <p>欢迎使用 几 。</p>
                 <p>点击右上角的按钮可以进行一切操作</P>
+                <p>向下滚动发现新功能</p>
             </article>
             <aside class="fleft ctrl-panel" id="ctrl-panel" data-state="hide">
                 <div id="initial-input">
@@ -40,8 +45,8 @@
                     </div>
                     <div id="input-plan-wrapper">
                         <h2>添加计划</h2>
-                        <input type="text" name="date" id="start-date">
-                        <input type="text" name="date" id="end-date">
+                        <input type="text" name="date" id="start-date" placeholder="开始日期">
+                        <input type="text" name="date" id="end-date" placeholder="完成日期">
                         <input type="text" name="" class="input-task" id="plan-content" placeholder="试试输入'看20本书'和'看书'的区别" ng-keyup="$event.keyCode == 13 && addNewPlan()">
                     </div>
                 </div>
@@ -50,7 +55,7 @@
                     <h2>导出数据</h2>
                     <p>几 只将数据存储在你的本地，所以如果你更换了浏览器或者电脑，请提前将数据导出保存，然后再在新电脑上导入数据。如果没有十足的把握，最好不要更改你导出的数据文件，否则可能导致导入失败。</p>
                     <button id="output-data-btn" ng-click="outputData()">导出数据</button>
-                    <a download="data.txt" id="output-data-link" class="invisible">下载</a>
+                    <a download="data.txt" id="output-data-link" class="invisible cp-link">下载</a>
                 </div>
 
                 <div id="upload-data-wrapper">
@@ -61,7 +66,7 @@
 
                 <div>
                     <h2>反馈与建议</h2>
-                    <p>如果你有任何建议，请一定要告诉我哦！</p>我的邮箱：fiona_fanmy@163.com
+                    <p>如果你有任何建议，非常期待你能提<a class="cp-link" href="https://github.com/fiona23/ji/issues">issue</a>或者给我发<a class="cp-link" title="fiona_fanmy@163.com" href="mailto:fiona_fanmy@163.com">邮件</a>。 喜欢它的话，点一个<a class="cp-link" href="https://github.com/fiona23/ji">star</a>吧^_^</p>
                 </div>
             </aside>
 
@@ -69,21 +74,10 @@
 
         <div id="fullpage" >
             <div class="section" ng-controller="taskListCtrl" >
-
-                <header>
-                    
-                    <h1 class="page-title">每天坚持几件小事 {{ showWelcome }}<span class="year-show">{{ currentYear }}</span></h1>
-                </header>
-                <h2 class="month">{{ currentMonth+1 }}</h2>
-
-                <!-- <section class="container"> -->
-
- <!--                    <article id="welcome" ng-if="showWelcome" class="welcome">
-
-                        <p>欢迎使用 几 。</p>
-                        <p>点击右上角的按钮可以进行一切操作</P>
-                    </article> -->
-                    
+                <div class="page-wrapper">
+                    <h1 class="page-title">每天坚持几件小事<span class="year-show">{{ currentYear }}</span></h1>
+                    <h2 class="month">{{ currentMonth+1 }}</h2>
+                        
                     <article id="daily-task" class="main-cale"  ng-if="!showWelcome">
                         <table>
                             <tbody>
@@ -134,75 +128,54 @@
                         </table>
                     </article>
 
-                    <!-- <aside class="fleft ctrl-panel" id="ctrl-panel" data-state="hide">
-                        <div id="initial-input">
-                            <h2>添加任务</h2>
-                            <input type="text" id="input-task" class="input-task" ng-keyup="$event.keyCode == 13 && enterTask()" placeholder="按回车键以后添加下一条任务">
-                        </div>
-
-                        <div id="output-data">
-                            <h2>导出数据</h2>
-                            <p>几 只将数据存储在你的本地，所以如果你更换了浏览器或者电脑，请提前将数据导出保存，然后再在新电脑上导入数据。如果没有十足的把握，最好不要更改你导出的数据文件，否则可能导致导入失败。</p>
-                            <button id="output-data-btn" ng-click="outputData()">导出数据</button>
-                            <a download="data.txt" id="output-data-link" class="invisible">下载</a>
-                        </div>
-
-                        <div id="upload-data-wrapper">
-                            <h2>导入数据</h2>
-                            <input type="file" id="input-data">
-                            <button id="upload-data btn" ng-click="uploadData()">上传</button>
-                        </div>
-
-                        <div>
-                            <h2>反馈与建议</h2>
-                            <p>如果你有任何建议，请一定要告诉我哦！</p>我的邮箱：fiona_fanmy@163.com
-                        </div>
-                    </aside> -->
-
                     <div id="monthChart"></div>
                     <div id="yearChart"></div>
+                </div>
                 <!-- </section> -->
             </div> <!-- page_1 -->
             
-            <div class="section" ng-controller="longTermPlan">
-                <h1 class="page-title">长期计划</h1>
-                <section class="main-cale" ng-if="!showWelcome">
-                    <!-- <div> -->
-                        <div class="plan-line" ng-repeat="plan in allPlans | filter: filterEmpty" id="plan-{{ plan.id }}">
-                            
-                            <div data-plan="{{ plan.id }}">
-                                <div>
-                                    <div class="edit-wrapper invisible plan-edit-group">
-                                        <input class="edit-plan-input edit-item-input" type="text" value="{{ plan.content }}">
-                                        <div class="edit-button-group">
-                                            <i class="finish-edit fa fa-check" ng-click="plan.finishEdit($event, 'plan')"></i>
-                                            <i class="delete-btn fa fa-trash" ng-click="plan.delete('allPlans')"></i>
-                                            <i class="cancel-btn fa fa-times" ng-click="plan.cancelEdit($event, 'plan')"></i>
+            <div class="section" ng-controller="longTermPlan" ng-click="cancelChangeEndDate()">
+                <div class="page-wrapper">
+                    <h1 class="page-title">长期计划</h1>
+                    <section class="main-cale" ng-if="!showWelcome">
+                        <!-- <div> -->
+                            <div class="plan-line" ng-repeat="plan in allPlans | filter: filterEmpty" id="plan-{{ plan.id }}">
+                                <!-- {{ plan }} -->
+                                <div data-plan="{{ plan.id }}">
+                                    <div>
+                                        <div class="edit-wrapper invisible plan-edit-group">
+                                            <input class="edit-plan-input edit-item-input" type="text" value="{{ plan.content }}">
+                                            <div class="edit-button-group">
+                                                <i class="finish-edit fa fa-check" ng-click="plan.finishEdit($event, 'plan')"></i>
+                                                <i class="delete-btn fa fa-trash" ng-click="plan.delete('allPlans')"></i>
+                                                <i class="cancel-btn fa fa-times" ng-click="plan.cancelEdit($event, 'plan')"></i>
+                                            </div>
                                         </div>
+                                        <span ng-dblclick="plan.edit($event, 'plan')" class="item-content">{{ plan.content }}</span> / 我已完成
+                                        <button class="btn-small add-progress" ng-mousedown="plan.minusProgress()">-</button>
+                                        <span>{{ plan.finishConShow }}</span>
+                                        <button class="btn-small add-progress" ng-mousedown="plan.addProgress()">+</button>
+                                        {{ plan.unit }}
                                     </div>
-                                    <span ng-dblclick="plan.edit($event, 'plan')" class="item-content">{{ plan.content }}</span> / 我已完成
-                                    <button class="btn-small add-progress" ng-mousedown="plan.minusProgress()">-</button>
-                                    <span>{{ plan.finishConShow }}</span>
-                                    <button class="btn-small add-progress" ng-mousedown="plan.addProgress()">+</button>
-                                    {{ plan.unit }}
-                                </div>
 
-                            </div>
-                            
-                            <div class="plan-progress" id="progress-{{ plan.id }}">
-                                <div class="all-bar">
-                                    <p class="start-date">{{ plan.startDateYear }}年{{ plan.startDateMon }}月{{ plan.startDateDay }}日</p>
-                                    <p class="end-date">{{ plan.endDateYear }}年{{ plan.endDateMon }}月{{ plan.endDateDay }}日</p>
                                 </div>
-                                <div class="time-bar" id="time-bar-{{ plan.id }}" ng-style="plan.timeBarStyle">
-                                    <p class="current-date">{{ currentYear }}年{{ currentMonth+1 }}月{{ currentDay }}日</p>
-                                </div>
-                                <div class="plan-bar" id="time-bar-{{ plan.id }}" ng-style="plan.planBarStyle"></div>
+                                
+                                <div class="plan-progress" id="progress-{{ plan.id }}">
+                                    <div class="all-bar">
+                                        <p class="start-date">{{ plan.startDateYear }}年{{ plan.startDateMon }}月{{ plan.startDateDay }}日</p>
+                                        <p class="end-date" ng-dblclick="plan.showChangeEndDate()" title="双击可修改完成日期">{{ plan.endDateYear }}年{{ plan.endDateMon }}月{{ plan.endDateDay }}日</p>
+                                        <input type="text" class="end-date invisible change-endDate-input endDate-input-{{plan.id}}" ng-keyup="$event.keyCode == 13 && plan.changeEndDate($event)" value="更改完成日期">
+                                    </div>
+                                    <div class="time-bar" id="time-bar-{{ plan.id }}" ng-style="plan.timeBarStyle">
+                                        <p class="current-date">{{ currentYear }}年{{ currentMonth+1 }}月{{ currentDay }}日</p>
+                                    </div>
+                                    <div class="plan-bar" id="time-bar-{{ plan.id }}" ng-style="plan.planBarStyle"></div>
 
+                                </div>
                             </div>
-                        </div>
-                    <!-- </div> -->
-                </section>
+                        <!-- </div> -->
+                    </section>
+                </div>
             </div>
             <!-- page_2_end-->
         </div>
