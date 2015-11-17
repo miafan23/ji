@@ -828,8 +828,14 @@ taskList.controller('ctrlPanel', function ($rootScope, $scope, localStorageServi
 
 
 function checkPlanInput (startDate, endDate, planContent) {
-    if (!(startDate && endDate && planContent)) {
-        alert('请输入完整哦');
+
+    if (!(startDate[0] && endDate[0])) {
+        alert('请输入日期~');
+        return false;
+    };
+
+    if (!planContent) {
+        alert('请输入计划内容~');
         return false;
     };
 
