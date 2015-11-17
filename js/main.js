@@ -843,24 +843,41 @@ function checkPlanInput (startDate, endDate, planContent) {
     var startDateMon = startDate[0];
     var startDateDay = startDate[1];
 
+    var startDate = new Date(startDateYear, startDateMon-1, startDateDay);
+
     var endDateYear = endDate[2];
     var endDateMon = endDate[0];
     var endDateDay = endDate[1];
+
+    var endDate = new Date(endDateYear, endDateMon-1, endDateDay)
 
     var currentDate = new Date();
     var currentYear = currentDate.getFullYear();
     var currentMonth = currentDate.getMonth();
     var currentDay = currentDate.getDate();
 
-    if (!(endDateYear >= startDateYear && endDateMon >= startDateMon && endDateDay >= startDateDay)){
+    // if (!(endDateYear >= startDateYear && endDateMon >= startDateMon && endDateDay >= startDateDay)){
+    //     alert('完成日期必须在开始日期之后哦')
+    //     return false;
+    // }
+
+    // if (!(endDateYear >= currentYear && endDateMon >= currentMonth && endDateDay >= currentDay)){
+    //     alert('完成日期不能在今天以前哦')
+    //     return false;
+    // }
+    console.log(endDate)
+    console.log(startDate)
+    console.log(currentDate)
+console.log(endDate < startDate)
+    if (endDate < startDate) {
         alert('完成日期必须在开始日期之后哦')
         return false;
     }
 
-    if (!(endDateYear >= currentYear && endDateMon >= currentMonth && endDateDay >= currentDay)){
+    if (currentDate > endDate) {
         alert('完成日期不能在今天以前哦')
         return false;
-    }
+    };
 
     return true;
 }
