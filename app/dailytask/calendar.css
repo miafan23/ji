@@ -1,0 +1,4 @@
+.rc-calendartbody td {
+  padding: 5px;
+  cursor: pointer;
+}
