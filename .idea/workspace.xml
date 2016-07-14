@@ -2,18 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="079380c7-e5b7-48a8-90ac-654050cbf7c1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/auth/login.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/auth/register.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/dailytask/calendar.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/dailytask/index.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/dailytask/monthcalendar.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/index.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/index.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/index/index.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webpack.config.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/old/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/dailytask/calendar.css" afterPath="$PROJECT_DIR$/app/dailytask/calendar.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/dailytask/monthcalendar.jsx" afterPath="$PROJECT_DIR$/app/dailytask/monthcalendar.jsx" />
     </list>
     <ignored path="ji.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,7 +30,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
               <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-              <folding />
+              <folding>
+                <marker date="1468316996000" expanded="true" signature="371:803" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -49,7 +42,10 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
               <caret line="6" column="53" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="53" />
-              <folding />
+              <folding>
+                <marker date="1468317228000" expanded="true" signature="296:369" ph="&lt;xml/&gt;" />
+                <marker date="1468317228000" expanded="true" signature="309:357" ph="&lt;xml/&gt;" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -84,21 +80,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="monthcalendar.jsx" pinned="false" current-in-tab="true">
+      <file leaf-file-name="monthcalendar.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/dailytask/monthcalendar.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="6" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
-              <folding />
+            <state relative-caret-position="300">
+              <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
+              <folding>
+                <marker date="1468322903000" expanded="true" signature="244:1495" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="calendar.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="calendar.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/dailytask/calendar.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
+            <state relative-caret-position="195">
+              <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -129,7 +127,13 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="483">
               <caret line="41" column="1" selection-start-line="41" selection-start-column="1" selection-end-line="41" selection-end-column="1" />
-              <folding />
+              <folding>
+                <marker date="1468316547000" expanded="true" signature="0:1068" ph="{&quot;name&quot;: &quot;ji&quot;...}" />
+                <marker date="1468316547000" expanded="true" signature="146:242" ph="{&quot;dev&quot;: &quot;webpack-dev-server&quot;...}" />
+                <marker date="1468316547000" expanded="true" signature="260:335" ph="{&quot;type&quot;: &quot;git&quot;...}" />
+                <marker date="1468316547000" expanded="true" signature="383:438" ph="{&quot;url&quot;: &quot;https://github.com/fiona23/ji/issues&quot;...}" />
+                <marker date="1468316547000" expanded="true" signature="512:809" ph="{&quot;babel-loader&quot;: &quot;^6.2.4&quot;...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -156,12 +160,12 @@
         <option value="$PROJECT_DIR$/app/dailytask/calendar.jsx" />
         <option value="$PROJECT_DIR$/app/dailytask/calendar.jsx.js" />
         <option value="$PROJECT_DIR$/app/dailytask/index.jsx" />
-        <option value="$PROJECT_DIR$/app/dailytask/calendar.css" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/app/app.jsx" />
         <option value="$PROJECT_DIR$/webpack.config.js" />
         <option value="$PROJECT_DIR$/app/index.jsx" />
         <option value="$PROJECT_DIR$/app/dailytask/monthcalendar.jsx" />
+        <option value="$PROJECT_DIR$/app/dailytask/calendar.css" />
       </list>
     </option>
   </component>
@@ -300,7 +304,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../extremely-simple-flux-demo" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../element-ui" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
@@ -386,12 +390,12 @@
       <workItem from="1468306401238" duration="2015000" />
       <workItem from="1468308887892" duration="772000" />
       <workItem from="1468309761159" duration="516000" />
-      <workItem from="1468310433224" duration="6473000" />
+      <workItem from="1468310433224" duration="11670000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9776000" />
+    <option name="totallyTimeSpent" value="14973000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="709" extended-state="6" />
@@ -435,7 +439,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-          <folding />
+          <folding>
+            <marker date="1468316996000" expanded="true" signature="371:803" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -443,7 +449,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <marker date="1468317228000" expanded="true" signature="296:369" ph="&lt;xml/&gt;" />
+            <marker date="1468317228000" expanded="true" signature="309:357" ph="&lt;xml/&gt;" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -475,7 +484,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
-          <folding />
+          <folding>
+            <marker date="1468316547000" expanded="true" signature="0:1068" ph="{&quot;name&quot;: &quot;ji&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="146:242" ph="{&quot;dev&quot;: &quot;webpack-dev-server&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="260:335" ph="{&quot;type&quot;: &quot;git&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="383:438" ph="{&quot;url&quot;: &quot;https://github.com/fiona23/ji/issues&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="512:809" ph="{&quot;babel-loader&quot;: &quot;^6.2.4&quot;...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -483,7 +498,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-          <folding />
+          <folding>
+            <marker date="1468316996000" expanded="true" signature="371:803" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -491,7 +508,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
-          <folding />
+          <folding>
+            <marker date="1468317228000" expanded="true" signature="296:369" ph="&lt;xml/&gt;" />
+            <marker date="1468317228000" expanded="true" signature="309:357" ph="&lt;xml/&gt;" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -515,7 +535,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
-          <folding />
+          <folding>
+            <marker date="1468316547000" expanded="true" signature="0:1068" ph="{&quot;name&quot;: &quot;ji&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="146:242" ph="{&quot;dev&quot;: &quot;webpack-dev-server&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="260:335" ph="{&quot;type&quot;: &quot;git&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="383:438" ph="{&quot;url&quot;: &quot;https://github.com/fiona23/ji/issues&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="512:809" ph="{&quot;babel-loader&quot;: &quot;^6.2.4&quot;...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -523,7 +549,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-          <folding />
+          <folding>
+            <marker date="1468316996000" expanded="true" signature="371:803" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -531,7 +559,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <marker date="1468317228000" expanded="true" signature="296:369" ph="&lt;xml/&gt;" />
+            <marker date="1468317228000" expanded="true" signature="309:357" ph="&lt;xml/&gt;" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -547,7 +578,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
-          <folding />
+          <folding>
+            <marker date="1468316547000" expanded="true" signature="0:1068" ph="{&quot;name&quot;: &quot;ji&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="146:242" ph="{&quot;dev&quot;: &quot;webpack-dev-server&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="260:335" ph="{&quot;type&quot;: &quot;git&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="383:438" ph="{&quot;url&quot;: &quot;https://github.com/fiona23/ji/issues&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="512:809" ph="{&quot;babel-loader&quot;: &quot;^6.2.4&quot;...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -590,22 +627,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/dailytask/calendar.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="41" column="1" selection-start-line="41" selection-start-column="1" selection-end-line="41" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/app.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -614,19 +635,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/dailytask/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webpack.config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-          <folding />
+          <folding>
+            <marker date="1468316996000" expanded="true" signature="371:803" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -642,7 +657,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="53" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="53" />
-          <folding />
+          <folding>
+            <marker date="1468317228000" expanded="true" signature="296:369" ph="&lt;xml/&gt;" />
+            <marker date="1468317228000" expanded="true" signature="309:357" ph="&lt;xml/&gt;" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -654,10 +672,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="41" column="1" selection-start-line="41" selection-start-column="1" selection-end-line="41" selection-end-column="1" />
+          <folding>
+            <marker date="1468316547000" expanded="true" signature="0:1068" ph="{&quot;name&quot;: &quot;ji&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="146:242" ph="{&quot;dev&quot;: &quot;webpack-dev-server&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="260:335" ph="{&quot;type&quot;: &quot;git&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="383:438" ph="{&quot;url&quot;: &quot;https://github.com/fiona23/ji/issues&quot;...}" />
+            <marker date="1468316547000" expanded="true" signature="512:809" ph="{&quot;babel-loader&quot;: &quot;^6.2.4&quot;...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/dailytask/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/dailytask/monthcalendar.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="6" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+        <state relative-caret-position="300">
+          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
+          <folding>
+            <marker date="1468322903000" expanded="true" signature="244:1495" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/dailytask/calendar.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
           <folding />
         </state>
       </provider>

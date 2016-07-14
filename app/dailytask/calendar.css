@@ -1,4 +1,16 @@
-.rc-calendartbody td {
+.calendar-head > div {
+  display: inline-block;
   padding: 5px;
-  cursor: pointer;
+  width: 10px;
+}
+.calendar-week > div {
+  display: inline-block;
+  padding: 5px;
+  width: 10px;
+}
+
+@media (max-width: 720px) {
+  .mobile-hide {
+    display: none;
+  }
 }
