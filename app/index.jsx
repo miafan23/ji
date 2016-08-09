@@ -1,16 +1,17 @@
 const React = require('react');
 const ReactDom = require('react-dom');
-const Register = require('./auth/register');
+const Signup = require('./auth/signup');
 const Index = require('./index/index');
-import createBrowserHistory from 'history/lib/createBrowserHistory'
-import { Router, Route, Link } from 'react-router'
+import Login from './auth/login';
+import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router'
 
-// import Register from './components/auth/register';
+// import Register from './components/auth/signup';
 
 ReactDom.render((
-  <Router history={createBrowserHistory()}>
-    <Route path="/" component={Index}>
-
+  <Router>
+    <Route path="/">
+      <IndexRoute component={Index} />
+      <Route path="login" component={Login} />
     </Route>
   </Router>
 ), document.getElementById('app'))

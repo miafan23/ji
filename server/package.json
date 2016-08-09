@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "co-fs": "^1.2.0",
     "config-lite": "^1.5.0",
+    "consolidate": "^0.14.1",
     "koa": "^1.2.1",
     "koa-bodyparser": "^2.2.0",
     "koa-errorhandler": "^0.1.1",
@@ -17,6 +19,8 @@
     "koa-generic-session": "^1.11.3",
     "koa-generic-session-mongo": "^0.2.5",
     "koa-logger": "^1.3.0",
+    "koa-render": "^0.2.1",
+    "koa-router": "^5.4.0",
     "koa-router-cache": "^1.3.1",
     "koa-scheme": "^2.2.0",
     "koa-send": "^3.2.0",

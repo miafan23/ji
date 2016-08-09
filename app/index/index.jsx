@@ -1,19 +1,19 @@
 const React = require('react');
-const Register = require('../auth/register');
+const Signup = require('../auth/signup');
 const Login = require('../auth/login');
 const Dailytask = require('../dailytask/index');
 
 var Index = React.createClass({
   getInitialState() {
     return {
-      isLogin: true
+      isLogin: false
     }
   },
 
   render() {
     return(
       <div>
-        {this.state.isLogin ?  <Dailytask /> : <Register />}
+        {this.state.isLogin ?  <Dailytask /> : <Signup />}
       </div>
     )
   }

@@ -1,6 +1,6 @@
 const User = require('./user')
 
-module.export = {
+module.exports = {
   get $User () {
     return User;
   }

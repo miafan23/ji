@@ -7,7 +7,7 @@ module.exports = {
       "session": checkNotLogin
     }
   },
-  "POST /signup": {
+  "POST /api/signup": {
     "request": {
       "body": checkSignupBody
     }
@@ -52,26 +52,27 @@ function checkLogin() {
 }
 
 function checkSignupBody() {
+  console.log('sessionnnnnnn')
   var body = this.request.body;
   var flash;
-  if (!body || !body.name) {
+  if (!body || !body.username) {
     flash = {error: '请填写用户名!'};
   }
-  // else if (!body.email || !validator.isEmail(body.email)) {
-  //   flash = {error: '请填写正确邮箱地址!'};
-  // }
+  else if (!body.email || !validator.isEmail(body.email)) {
+    flash = {error: '请填写正确邮箱地址!'};
+  }
   else if (!body.password) {
     flash = {error: '请填写密码!'};
   }
   else if (body.password !== body.re_password) {
     flash = {error: '两次密码不匹配!'};
   }
+  console.log(flash)
   if (flash) {
     this.flash = flash;
-    this.redirect('back');
-    return false;
+    return this.throw(400, flash);
   }
-  body.name = validator.trim(body.name);
+  body.username = validator.trim(body.username);
   body.email = validator.trim(body.email);
   body.password = md5(validator.trim(body.password));
   return true;
@@ -80,10 +81,9 @@ function checkSignupBody() {
 function checkSigninBody() {
   var body = this.request.body;
   var flash;
-  if (!body || !body.name) {
+  if (!body || !body.username) {
     flash = {error: '请填写用户名!'};
-  }
-  else if (!body.password) {
+  } else if (!body.password) {
     flash = {error: '请填写密码!'};
   }
   if (flash) {
