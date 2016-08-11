@@ -1,12 +1,13 @@
 const React = require('react');
 import Task from './task';
+import TasksStore from '../stores/tasks';
 
 var tasks;
 tasks = React.createClass({
   getInitialState() {
     console.log(this.props);
     return {
-      tasks: []
+      tasks: TaskStore.getAllTasks();
     }
   },
   componentDidMount() {

@@ -10,6 +10,10 @@ AppDispatcher.register((action) => {
       TaskStore.addNewTaskHandler(action.task);
       TaskStore.emitChange();
       break;
+    case 'CHANGE_TASK_STATUS':
+      TaskStore.changeTaskStatusHandler(action);
+      TaskStore.emitChange();
+      break;
     default:
       //
   }

@@ -1,5 +1,5 @@
 const React = require('react');
-
+const $ = require('jquery');
 const Register = React.createClass({
   getInitialState() {
     return {
@@ -27,7 +27,8 @@ const Register = React.createClass({
       }
     })
       .done(function(data) {
-        windows.location.href = '/';
+        console.log('yes')
+        // windows.location.href = '/';
       })
       .fail(function(data) {
         console.log(data)
@@ -39,7 +40,7 @@ const Register = React.createClass({
     return(
       <div>
         <h1>Login</h1>
-        <form onSubmit="">
+        <form onSubmit={this.handleSubmit}>
           <label htmlFor="">username</label>
           <input
             type="text"

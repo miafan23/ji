@@ -4,7 +4,9 @@ const Pikaday = require('pikaday');
 const moment = require('moment');
 // import Calendar from 'rc-calendar';
 var CalendarPlugin = require('rc-calendar');
+import classNames from 'classnames';
 import Task from './task';
+import TasksStore from '../stores/tasks';
 
 var Calendar = React.createClass({
   getInitialState() {
@@ -22,7 +24,8 @@ var Calendar = React.createClass({
         date: i,
         week: thisDay.day(),
         //判断是不是和今天同一周
-        className: isCurrentWeek ? '' : 'mobile-hide'
+        // className: isCurrentWeek ? '' : 'mobile-hide'
+        isCurrentWeek
       });
     }
 
@@ -30,14 +33,17 @@ var Calendar = React.createClass({
       now,
       days,
       currentMonth,
-      tasks: [{name: '1'},{name: '2'}]
+      tasks: TasksStore.getAllTasks()
     }
   },
 
   componentDidMount() {
-    let picker = new Pikaday({});
+    TasksStore.addChangeListener(this._onChange);
+  },
+
+  _onChange() {
     this.setState({
-      tasks: [{name: '1'},{name: '2'}]
+      tasks: TasksStore.getAllTasks()
     })
   },
 
@@ -48,14 +54,15 @@ var Calendar = React.createClass({
         <tr>
           <th>{this.state.currentMonth}月</th>
           {this.state.days.map((day) => {
-            return <th key={day.date} className={day.className}>{day.date}</th>
+            return <th key={day.date} className={classNames({'mobile-hide': !day.isCurrentWeek})}>{day.date}</th>
           })}
         </tr>
         {this.state.tasks.map((task, index) => {
           let days = this.state.days;
           let props={
             task,
-            days
+            days,
+            taskIndex: index
           }
           return <Task key={index} { ...props }/>
         })}
@@ -71,4 +78,3 @@ module.exports = Calendar;
 // })}
 //
 //        <Tasks {...this.state.days}/>
-

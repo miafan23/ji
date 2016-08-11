@@ -1,16 +1,19 @@
 /*.calendar {*/
   /*display: flex;*/
 /*}*/
-
-.calendar-head > div {
-  display: inline-block;
-  padding: 5px;
-  width: 10px;
+.calendar {
+  width: 100%;
 }
-.calendar-week > div {
-  display: inline-block;
-  padding: 5px;
-  width: 10px;
+.calendar .process {
+  background: #eee;
+}
+
+.calendar .process.process-check {
+  background: #072;
+}
+
+.calendar .process.process-uncheck {
+  background-color: #a00;
 }
 
 @media (max-width: 720px) {

@@ -1,10 +1,19 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 
 const TaskActions = {
-  addNewTask(name) {
+  addNewTask(task) {
     AppDispatcher.dispatch({
       actionType: 'ADD_NEW_TASK',
-      name
+      task
+    })
+  },
+
+  changeTaskStatus(taskIndex, index, status) {
+    AppDispatcher.dispatch({
+      actionType: 'CHANGE_TASK_STATUS',
+      taskIndex,
+      index,
+      status
     })
   }
 };

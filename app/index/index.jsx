@@ -13,7 +13,8 @@ var Index = React.createClass({
   render() {
     return(
       <div>
-        {this.state.isLogin ?  <Dailytask /> : <Signup />}
+        <h1>ji</h1>
+        <Dailytask />
       </div>
     )
   }
