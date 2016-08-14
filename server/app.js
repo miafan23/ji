@@ -27,7 +27,6 @@ app.use(express.static(__dirname + '/../dist'));
 
 require('./router')(app);
 
-
 app.listen(config.port, function () {
   console.log('Server listening on: ', config.port);
 });

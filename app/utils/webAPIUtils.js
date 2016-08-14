@@ -10,6 +10,7 @@ const WebAPIUtils = {
       type: 'GET'
     })
       .done(function(data) {
+        console.log(data)
         TaskActions.updateTasks(data);
       })
   },
@@ -25,6 +26,7 @@ const WebAPIUtils = {
           console.log('new month', monthId)
           return self.addTaskMonthId(monthId);
         }
+        // console.log(data);
         TaskActions.updateTasks(data);
       })
   },
@@ -55,11 +57,12 @@ const WebAPIUtils = {
         monthId: monthId
       }
     })
-    .done(data => {
-      if (data.message === 'SAVED') {
-        self.getUserTasksByMonthId(monthId);
-      }
-    })
+    // .done(data => {
+    //   console.log(data, '??')
+    //   if (data.message === 'SAVED') {
+    //     self.getUserTasksByMonthId(monthId);
+    //   }
+    // })
   },
 
   changeTaskStatus(index, status, id, monthId) {

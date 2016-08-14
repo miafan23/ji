@@ -7,7 +7,8 @@ const UserSchema = new Schema({
   password: {type: String, required: true},
   email: {type: String, required: true},
   created_at: {type: Date, default: Date.now},
-  tasks: {type: Array, default: []}
+  tasks: {type: Array, default: []},
+  // viewedMonthId: {type: Array, default:[]}
 });
 
 // UserSchema.plugin(passportLocalMongoose);

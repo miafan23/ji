@@ -27,12 +27,11 @@ exports.login = function(req, res) {
       }
       req.session.user = username;
       res.redirect('/');
-      console.log(req.session, 'eee');
+      // console.log(req.session, 'eee');
     });
 }
 
 exports.checkLogin = function(req, res) {
-  console.log(req.session);
   if (req.session.user) {
     res.send('logged');
   } else {
@@ -45,7 +44,7 @@ function md5 (str) {
 }
 
 function checkSignupBody(req) {
-  console.log('sessionnnnnnn')
+  // console.log('sessionnnnnnn')
   var body = req.body;
   var flash;
   if (!body || !body.username) {

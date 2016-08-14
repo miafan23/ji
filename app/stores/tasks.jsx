@@ -14,6 +14,7 @@ var TasksStore = Object.assign({}, EventEmitter.prototype, {
   },
 
   updateTasks(tasks) {
+    console.log('update', tasks)
     this.tasks = tasks;
   },
 
