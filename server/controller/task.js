@@ -21,25 +21,11 @@ exports.addNewTask = function(req, res) {
   let username = req.session.user;
   let taskname = req.body.task;
 
-  TaskModel.create({
-    task: taskname,
-    user: username,
-    monthId: '' + moment().year() + moment().month()
-  }, function(err, task) {
-    if(!err) {   
-      UserModel.findOne({username: username}, (err, _user) => {
-        //更新user.tasks字段
-        _user.tasks.push(taskname);
-        _user.save();
-
-        if (err) return res.status(403).send({message: 'ADD_ERROR'});
-        res.send({message: 'SAVED'});
-      })
-    } else {
-      return res.status(403).send({message: 'ADD_ERROR'});
-    }
+  let _8YearsTasks = create8YearsTasks(username, taskname)
+  TaskModel.create(_8YearsTasks, function(err) {
+    if (err) {return res.send('error') }
+    res.send({message: 'SAVED'});
   });
-
 }
 
 exports.updateStatus = function(req, res) {
@@ -49,7 +35,6 @@ exports.updateStatus = function(req, res) {
   let status = req.body.status;
 
   TaskModel.findOne({user: user, _id: id}, (err, task) => {
-    console.log(task)
     if(!task) return res.status(403).send({message: 'NO_TASK'});
     //根据现在的status更新状态
     switch (status) {
@@ -67,32 +52,22 @@ exports.updateStatus = function(req, res) {
   })
 }
 
-exports.addTaskMonthId = function(req, res) {
-  let username = req.session.user;
-  let monthId = req.body.monthId;
-  console.log('addTaskMonthId', monthId, req.body)
-  // 新建这个月所有的task
-  UserModel.findOne({username: username})
-  .exec((err, user) => {
-    let tasks = user.tasks;
-    //user.taks里所有的task都要新建
-    for (let i=0; i<tasks.length; i++) {
-      newMonthTask(tasks[i], username, monthId)
-    }
-  });
-}
 
-function newMonthTask(task, user, monthId) {
-  TaskModel.create({
-    task: task,
-    user: user,
-    monthId: monthId
-  }, function(err, task) {
-    if(!err) {
-      // res.send({message: 'SAVED'});
-    } else {
-      throw error('error');
-    }
-  })
-}
+function create8YearsTasks(user, task) {
+  let taskList = [];
 
+  let year = moment().year();
+  let month = moment().month();
+
+  for(let i=year-2; i<=year+6; i++){
+    for(let j=0; j<12; j++){
+      taskList.push({
+        task: task,
+        user: user,
+        monthId: ''+i+j
+      })
+    }
+  }
+
+  return taskList;
+}

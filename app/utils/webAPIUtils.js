@@ -21,10 +21,6 @@ const WebAPIUtils = {
       type: 'GET'
     })
       .done(function(data) {
-        if (data instanceof Array && !data.length) {
-          console.log('new month', monthId)
-          return self.addTaskMonthId(monthId);
-        }
         TaskActions.updateTasks(data);
       })
   },
@@ -42,22 +38,6 @@ const WebAPIUtils = {
     .done(function(data) {
       if (data.message === 'SAVED') {
         self.getUserTasks();
-      }
-    })
-  },
-
-  addTaskMonthId(monthId) {
-    let self = this;
-    $.ajax({
-      url: '/api/addTaskMonthId',
-      type: 'POST',
-      data: {
-        monthId: monthId
-      }
-    })
-    .done(data => {
-      if (data.message === 'SAVED') {
-        self.getUserTasksByMonthId(monthId);
       }
     })
   },
