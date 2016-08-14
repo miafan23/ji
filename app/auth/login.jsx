@@ -28,7 +28,7 @@ const Register = React.createClass({
     })
       .done(function(data) {
         console.log('yes')
-        // windows.location.href = '/';
+        window.location.href = '/';
       })
       .fail(function(data) {
         console.log(data)
@@ -49,7 +49,7 @@ const Register = React.createClass({
             onChange={this.handleUsernameChange} />
 
             <label htmlFor="">password</label>
-            <input type="text"
+            <input type="password"
               name="password"
               value={this.state.password}
               onChange={this.handlePasswordChange}/>

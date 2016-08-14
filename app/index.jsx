@@ -10,7 +10,7 @@ import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router'
 ReactDom.render((
   <Router history={browserHistory}>
     <Route path="/">
-      <IndexRoute component={Index} />
+      <IndexRoute onEnter={requireAuth} component={Index} />
       <Route path="login" component={Login} />
       <Route path="signup" component={Signup} />
     </Route>
@@ -24,7 +24,7 @@ function requireAuth(nextState, replaceState, callback) {
   }).done((data) => {
     if (data === 'unlog') {
       replaceState('/signup');
-      callback();
     }
+    callback();
   })
 }

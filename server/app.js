@@ -13,8 +13,8 @@ app.use(cookieParser());
 // app.use(passport.initialize());
 // app.use(passport.session());
 app.use(session({
-  secret: 'ji'
-  // cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }
+  secret: 'ji',
+  cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }
 }));
 app.use(express.static(__dirname + '/../dist'));
 // app.use(flash());
@@ -26,6 +26,7 @@ app.use(express.static(__dirname + '/../dist'));
 // passport.deserializeUser(User.deserializeUser());
 
 require('./router')(app);
+
 
 app.listen(config.port, function () {
   console.log('Server listening on: ', config.port);

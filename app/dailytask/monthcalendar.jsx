@@ -7,72 +7,49 @@ var CalendarPlugin = require('rc-calendar');
 import classNames from 'classnames';
 import Task from './task';
 import TasksStore from '../stores/tasks';
-
+import ChangeTime from './changeTime';
+import DaysStore from '../stores/days';
 var Calendar = React.createClass({
   getInitialState() {
-    let now = moment();
-    //这个月有多少天
-    let dayNum = now.endOf('month').date();
-    let currentMonth = now.month()+1;
-    // let currentWeek = now.week();
-    let days = [];
-
-    for (let i = 1; i <= dayNum; i++) {
-      let thisDay = moment().date(i);
-      let isCurrentWeek = thisDay.week() === moment().week() && thisDay.year() === moment().year();
-      days.push({
-        date: i,
-        week: thisDay.day(),
-        //判断是不是和今天同一周
-        // className: isCurrentWeek ? '' : 'mobile-hide'
-        isCurrentWeek
-      });
-    }
-
-    return {
-      now,
-      days,
-      currentMonth,
-      tasks: TasksStore.getAllTasks()
-    }
-  },
-
-  componentDidMount() {
-    TasksStore.addChangeListener(this._onChange);
-  },
-
-  _onChange() {
-    this.setState({
-      tasks: TasksStore.getAllTasks()
-    })
+    return{}
   },
 
   render() {
     return(
-      <table className="calendar">
-        <tbody>
-        <tr>
-          <th>{this.state.currentMonth}月</th>
-          {this.state.days.map((day) => {
-            return <th key={day.date} className={classNames({'mobile-hide': !day.isCurrentWeek})}>{day.date}</th>
+      <div className="calendar-wrapper">
+        <ChangeTime />
+        <ul className="tasks-name">
+          {this.props.tasks.map((task,index) => {
+            return <li key={index}>{task.task}</li>
           })}
-        </tr>
-        {this.state.tasks.map((task, index) => {
-          let days = this.state.days;
-          let props={
-            task,
-            days,
-            taskIndex: index
-          }
-          return <Task key={index} { ...props }/>
-        })}
-        </tbody>
-      </table>
+        </ul>
+        <table className="calendar-table">
+          <tbody>
+          <tr>
+            {this.props.days.map((day) => {
+              return <th key={day.date} className={classNames({'mobile-hide': !day.isCurrentWeek})}>{day.date}</th>
+            })}
+          </tr>
+          {this.props.tasks.map((task, index) => {
+            let days = this.props.days;
+            let monthId = this.props.monthId;
+            let props={
+              task,
+              days,
+              monthId,
+              taskIndex: index
+            }
+            return <Task key={index} { ...props }/>
+          })}
+          </tbody>
+        </table>
+      </div>
     )
   }
 });
 
 module.exports = Calendar;
+  // <th>{this.state.currentMonth}月</th>
 // {this.state.days.map((day) => {
 //   return <div key={day.date} className={day.className}>{day.week}</div>
 // })}

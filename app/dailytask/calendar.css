@@ -1,22 +1,49 @@
 /*.calendar {*/
   /*display: flex;*/
 /*}*/
-.calendar {
+.calendar-wrapper {
   width: 100%;
 }
-.calendar .process {
+
+.calendar-table {
+  width: 100%;
+  table-layout: fixed;
+  position: relative;
+  opacity: 0.6;
+  z-index: 1;
+}
+.calendar-table .process {
   background: #eee;
+  height: 20px;
 }
 
-.calendar .process.process-check {
+.calendar-wrapper .tasks-name {
+  position: absolute;
+  list-style: none;
+  margin: 25px 0 0 0;
+  padding-left: 0;
+  z-index: 0;
+}
+
+.calendar-wrapper .tasks-name li {
+  height: 22px;
+}
+
+.calendar-table .process.process-check {
   background: #072;
 }
 
-.calendar .process.process-uncheck {
+.calendar-table .process.process-uncheck {
   background-color: #a00;
 }
 
-@media (max-width: 720px) {
+@media (min-width: 640px) {
+  .pc-hide {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
   .mobile-hide {
     display: none;
     background: red;

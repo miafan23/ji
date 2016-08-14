@@ -1,6 +1,20 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 
 const TaskActions = {
+  initializeTasks(task) {
+    AppDispatcher.dispatch({
+      actionType: 'INITIALIZE_TASKS',
+      task
+    })
+  },
+
+  updateTasks(tasks) {
+    AppDispatcher.dispatch({
+      actionType: 'UPDATE_TASKS',
+      tasks
+    })
+  },
+
   addNewTask(task) {
     AppDispatcher.dispatch({
       actionType: 'ADD_NEW_TASK',
@@ -14,6 +28,18 @@ const TaskActions = {
       taskIndex,
       index,
       status
+    })
+  },
+
+  preMonth() {
+    AppDispatcher.dispatch({
+      actionType: 'TASK_PRE_MONTH',
+    })
+  },
+
+  afterMonth() {
+    AppDispatcher.dispatch({
+      actionType: 'TASK_AFTER_MONTH',
     })
   }
 };

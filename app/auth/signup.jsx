@@ -1,5 +1,6 @@
 const React = require('react');
 const $ = require('jquery');
+import { Link } from 'react-router'
 
 const Signup = React.createClass({
   getInitialState() {
@@ -55,6 +56,7 @@ const Signup = React.createClass({
     return(
       <div>
         <h1>Sign Up</h1>
+        <Link to="/login">login</Link>
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="">username</label>
           <input

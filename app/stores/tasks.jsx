@@ -1,11 +1,21 @@
 const EventEmitter = require('events').EventEmitter;
 // const assign = require('object-assign');
+import moment from 'moment';
 
 var TasksStore = Object.assign({}, EventEmitter.prototype, {
   tasks: [{
+    id: ''+moment().year()+moment().month(),
     task: 'aini',
     process: new Array(31)
   }],
+
+  initializeTasks(tasks) {
+    this.tasks = tasks;
+  },
+
+  updateTasks(tasks) {
+    this.tasks = tasks;
+  },
 
   getAllTasks() {
     return this.tasks;
@@ -13,10 +23,10 @@ var TasksStore = Object.assign({}, EventEmitter.prototype, {
 
   addNewTaskHandler(task) {
     this.tasks.push({
+      id: ''+moment().year()+moment().month(),
       task: task,
       process: new Array(31)
     });
-    console.log(this.tasks);
   },
 
   changeTaskStatusHandler(action){
@@ -31,6 +41,14 @@ var TasksStore = Object.assign({}, EventEmitter.prototype, {
       default:
         this.tasks[taskIndex].process[index] = 'check';
     }
+  },
+
+  preMonth(){
+
+  },
+
+  afterMonth(){
+
   },
 
   emitChange() {

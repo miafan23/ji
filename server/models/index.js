@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 var config = require('config-lite').mongodb;
 
 mongoose.connect(config.url, function (err) {
@@ -9,3 +10,4 @@ mongoose.connect(config.url, function (err) {
 });
 
 exports.User = require('./user');
+exports.Task = require('./task');

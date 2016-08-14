@@ -1,20 +1,45 @@
 const React = require('react');
 import TaskActions from '../action/TaskActions';
+import WebAPIUtils from '../utils/webAPIUtils';
 
 const AddTask = React.createClass({
-  showInput() {
-    //showinput
+  getInitialState() {
+    return {
+      showInput: false,
+    };
+  },
+  changeShowInput() {
+    let self = this;
+    this.setState({
+      showInput: !self.state.showInput
+    })
   },
 
-  hideInput() {
-    console.log('fef')
+  render() {
+    return(
+      <div>
+        <button onClick={this.changeShowInput}>add</button>
+        {this.state.showInput ? <InputTask /> : null }
+      </div>
+    )
+  }
+});
+
+const InputTask = React.createClass({
+  getInitialState() {
+    return {
+      task: ''
+    };
   },
 
-  addNewTask(name) {
-    console.log(name);
+  addNewTask() {
+    let name = this.state.task;
     if (!this.checkName(name)) return;
-    TaskActions.addNewTask(name);
-    this.hideInput();
+    // TaskActions.addNewTask(name);
+    WebAPIUtils.addNewTask(name);
+    this.setState({
+      task: ''
+    })
   },
 
   checkName(name) {
@@ -23,19 +48,22 @@ const AddTask = React.createClass({
 
   handleKeyUp(event) {
     if (event.keyCode === 13) {
-      let taskName = event.target.value;
-      this.addNewTask(taskName);
+      this.addNewTask();
     }
   },
-  
+
+  handleTaskInput(e){
+    this.setState({task: e.target.value});
+  },
+
   render() {
-    return(
+    return (
       <div>
-        <button onClick={this.showInput}>add</button>
-        <input type="text" onKeyUp={this.handleKeyUp}/>
+        <input type="text" onKeyUp={this.handleKeyUp} onChange={this.handleTaskInput} value={this.state.task}/>
+        <button onClick={this.addNewTask}>save</button>
       </div>
     )
   }
-});
+})
 
 export default AddTask;

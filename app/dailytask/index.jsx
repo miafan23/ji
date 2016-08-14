@@ -8,7 +8,7 @@ var Dailytask = React.createClass({
     return(
       <div>
         <h1>daily task</h1>
-        <Calendar></Calendar>
+        <Calendar tasks={this.props.tasks} days={this.props.days} monthId={this.props.monthId}></Calendar>
         <AddTask></AddTask>
       </div>
     )

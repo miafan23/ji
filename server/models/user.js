@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const passportLocalMongoose = require('passport-local-mongoose');
+// const passportLocalMongoose = require('passport-local-mongoose');
 
 const UserSchema = new Schema({
   username: {type: String, required: true},
@@ -10,7 +10,7 @@ const UserSchema = new Schema({
   tasks: {type: Array, default: []}
 });
 
-UserSchema.plugin(passportLocalMongoose);
+// UserSchema.plugin(passportLocalMongoose);
 
 UserSchema.index({name: 1});
 

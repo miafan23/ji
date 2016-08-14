@@ -26,7 +26,8 @@ exports.login = function(req, res) {
         return console.log('password err')
       }
       req.session.user = username;
-      console.log(req.session);
+      res.redirect('/');
+      console.log(req.session, 'eee');
     });
 }
 
