@@ -70,6 +70,12 @@ const DaysStore = Object.assign({}, EventEmitter.prototype, {
     this.monthId = '' + this.now.year() + this.now.month();
   },
 
+  goToday() {
+    this.now = moment();
+    this.days = (updateDays(this.now));
+    this.monthId = '' + this.now.year() + this.now.month();
+  },
+
   emitChange() {
     this.emit('change');
   },

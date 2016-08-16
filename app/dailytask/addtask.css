@@ -1,0 +1,41 @@
+.addtask {
+  position: relative;
+  margin-top: 20px;
+}
+
+.task-input {
+  width: 80%;
+  margin-right: 0;
+  overflow: hidden;
+}
+
+.add-button {
+  position: absolute;
+}
+
+.save-button {
+  position: absolute;
+  right: 0;
+  width: 0px;
+  height: 30px;
+  box-sizing: border-box;
+  background: #4B7C5B;
+  color: #fff;
+  border-radius:0 5px 5px 0;
+  border: 1px solid #4b7c58;
+}
+
+.dialog {
+  width: 300px;
+}
+
+@media (max-width: 640px) {
+  .add-button {
+    position: fixed;
+    top: 80%;
+    right: 50px;
+  }
+  .dialog {
+    width: 85%;
+  }
+}

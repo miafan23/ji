@@ -19,10 +19,12 @@ module.exports = function(app) {
 
   app.post('/api/login', AuthController.login);
   app.post('/api/checkLogin', AuthController.checkLogin);
+  app.options('/api/logout', loginRequired, AuthController.logout);
+  app.get('/api/getuser', loginRequired, AuthController.getUser);
+  
   app.post('/api/addnewtask', loginRequired, TaskController.addNewTask);
   app.get('/api/usertasks/:monthId', loginRequired, TaskController.getUserTasks);
   app.put('/api/taskstatus/:id', loginRequired, TaskController.updateStatus);
-
   app.get('*', function (request, response){
     response.sendFile(path.resolve(__dirname, '../dist/','index.html'))
   })

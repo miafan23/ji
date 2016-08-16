@@ -1,0 +1,90 @@
+.auth {
+  margin: 5% auto;
+}
+
+.auth-paper {
+  width: 450px;
+  padding: 30px;
+  margin: 0 auto;
+}
+
+.auth h1 {
+  text-align: center;
+  font-weight: 400;
+  margin-top: 0;
+  font-size: 45px;
+  color: #4B7C5B;
+}
+
+.subtitle {
+  text-align: center;
+  color: #999;
+}
+
+.auth-link {
+  display: inline-block;
+  margin-right: 30px;
+}
+
+.auth-link:link,
+.auth-link:visited  {
+  text-decoration: none;
+  color: #aaa;
+}
+
+.auth-link.active:link,
+.auth-link.active:visited  {
+  text-decoration: none;
+  color: #4B7C5B;
+}
+
+.auth-form > div {
+  width: 100%;
+  margin: 25px 0;
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.auth-form input[type=text],
+.auth-form input[type=password] {
+  display: block;
+  width: 100%;
+  height: 35px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  box-sizing: border-box;
+  padding: 0 7px;
+}
+
+.submit-button {
+	display: block;
+  width: 100%;
+  height: 40px;
+  background: #4B7C5B;
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.error-info {
+  font-size: 10px;
+  color: #f23;
+}
+
+.error-info.hide {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .auth-paper {
+    width: 80%;
+  }
+  .auth{
+    margin: 10% auto;
+  }
+}

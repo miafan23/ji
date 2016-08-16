@@ -25,6 +25,12 @@ const DaysActions = {
     })
   },
 
+  goToday() {
+    AppDispatcher.dispatch({
+      actionType: 'GO_TODAY'
+    })
+  },
+
   changeTaskStatus(taskIndex, index, status) {
     AppDispatcher.dispatch({
       actionType: 'CHANGE_TASK_STATUS',

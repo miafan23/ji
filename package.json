@@ -25,12 +25,15 @@
     "html-webpack-plugin": "^2.22.0",
     "jquery": "^3.1.0",
     "jsx-loader": "^0.13.2",
+    "material-ui": "^0.15.4",
     "moment": "^2.14.1",
     "pikaday": "^1.4.0",
     "rc-calendar": "^5.6.2",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-router": "^2.6.1",
+    "react-tap-event-plugin": "^1.0.0",
+    "validator": "^5.5.0",
     "webpack": "^1.13.1"
   },
   "devDependencies": {

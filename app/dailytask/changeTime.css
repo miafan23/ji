@@ -1,0 +1,16 @@
+/*.change-time > div {
+	position: absolute;
+	width: 90%;
+}
+*/
+.change-time .left{
+	/*position: absolute;
+	left: -7px;
+	top: -1px;*/
+}
+
+.change-time .right {
+	/*position: absolute;
+	right: -7px;
+	top: -1px;*/
+}

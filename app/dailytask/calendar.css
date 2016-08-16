@@ -3,18 +3,22 @@
 /*}*/
 .calendar-wrapper {
   width: 100%;
+  margin: 0 auto;
+  position: relative;
+  padding: 7px 7px 70px 7px;
+  box-sizing: border-box;
 }
 
 .calendar-table {
   width: 100%;
   table-layout: fixed;
   position: relative;
-  opacity: 0.6;
-  z-index: 1;
+  /*opacity: 0.6;*/
+  /*z-index: 1;*/
 }
 .calendar-table .process {
   background: #eee;
-  height: 20px;
+  height: 30px;
 }
 
 .calendar-wrapper .tasks-name {
@@ -22,30 +26,104 @@
   list-style: none;
   margin: 25px 0 0 0;
   padding-left: 0;
-  z-index: 0;
+  z-index: 1;
+  pointer-events: none;
+  text-shadow: 1px 1px 3px #fff;
+  font-weight: bolder;
 }
 
 .calendar-wrapper .tasks-name li {
-  height: 22px;
+  height: 24px;
+  padding-left: 5px;
+
+}
+
+.calendar-table .process {
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.calendar-table .process:before {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.calendar-table .process:after {
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .calendar-table .process.process-check {
-  background: #072;
+  background: #4B7C5B;
+  position: relative;
+}
+
+.calendar-table .process.process-check:after {
+  content: " ";
+  display: block;
+  width: 8px;
+  height: 4px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  transform: rotate(-45deg);
+  opacity: .8;
 }
 
 .calendar-table .process.process-uncheck {
-  background-color: #a00;
+  background-color: #EF5350;
+  position: relative;
 }
+
+.calendar-table .process.process-uncheck:before {
+  content: " ";
+  display: block;
+  width: 2px;
+  height: 10px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform:translate(-50%, -50%) rotate(45deg);
+  transform-origin: center center;
+  opacity: .8;
+}
+
+.calendar-table .process.process-uncheck:after {
+  content: " ";
+  display: block;
+  width: 2px;
+  height: 10px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  transform-origin: center center;
+  opacity: .8;
+}
+
+
 
 @media (min-width: 640px) {
   .pc-hide {
     display: none;
   }
+  .calendar-table .process {
+    height: 20px;
+  }
 }
+
+
 
 @media (max-width: 640px) {
   .mobile-hide {
     display: none;
     background: red;
+  }
+  .calendar-wrapper .tasks-name li {
+    height: 34px;
+    line-height: 34px;
   }
 }

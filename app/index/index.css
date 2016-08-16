@@ -1,0 +1,24 @@
+body, html{
+	margin: 0;
+	padding: 0;
+  background: #fdfdfd;
+}
+
+.index-wrapper {
+  /*width: 90%;*/
+  /*margin: 0 auto;*/
+}
+
+.manage-menu {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.870588);
+}
+
+
+@media (min-width: 925px) {
+  .calendar-paper {
+    width: 960px;
+    margin: 20px auto;
+    padding: 40px;
+  }
+}

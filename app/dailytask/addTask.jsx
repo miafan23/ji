@@ -1,11 +1,20 @@
 const React = require('react');
 import TaskActions from '../action/TaskActions';
 import WebAPIUtils from '../utils/webAPIUtils';
+import classNames from 'classnames';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
+
+require('./addtask.css');
 
 const AddTask = React.createClass({
   getInitialState() {
     return {
       showInput: false,
+      task: ''
     };
   },
   changeShowInput() {
@@ -15,21 +24,16 @@ const AddTask = React.createClass({
     })
   },
 
-  render() {
-    return(
-      <div>
-        <button onClick={this.changeShowInput}>add</button>
-        {this.state.showInput ? <InputTask /> : null }
-      </div>
-    )
-  }
-});
+  showInput() {
+    this.setState({
+      showInput: true
+    })
+  },
 
-const InputTask = React.createClass({
-  getInitialState() {
-    return {
-      task: ''
-    };
+  hideInput() {
+    this.setState({
+      showInput: false
+    })
   },
 
   addNewTask() {
@@ -39,7 +43,8 @@ const InputTask = React.createClass({
     WebAPIUtils.addNewTask(name);
     this.setState({
       task: ''
-    })
+    });
+    this.hideInput()
   },
 
   checkName(name) {
@@ -56,14 +61,50 @@ const InputTask = React.createClass({
     this.setState({task: e.target.value});
   },
 
+
   render() {
-    return (
-      <div>
-        <input type="text" onKeyUp={this.handleKeyUp} onChange={this.handleTaskInput} value={this.state.task}/>
-        <button onClick={this.addNewTask}>save</button>
+    const actions = [
+      <FlatButton
+        label="取消"
+        onClick={this.hideInput}
+      />,
+
+      <FlatButton
+        label="提交"
+        primary={true}
+        onClick={this.addNewTask}
+      />
+    ];
+    let self = this;
+    let buttonClass = classNames({
+      'add-button': true,
+      'active': self.state.showInput
+    });
+    let inputClass = classNames({
+      'task-input': true,
+      'active': self.props.showInput
+    })
+    return(
+      <div className="addtask">
+        <FloatingActionButton onTouchTap={this.showInput} className={buttonClass}>
+          <ContentAdd />
+        </FloatingActionButton>
+        <Dialog
+          open={this.state.showInput}
+          actions={actions}
+        >
+        <div className={inputClass}>
+          <TextField
+            floatingLabelText="任务名称"
+            onKeyUp={this.handleKeyUp}
+            onChange={this.handleTaskInput}
+            value={this.state.task}
+          />
+        </div>
+        </Dialog>
       </div>
     )
   }
-})
+});
 
 export default AddTask;

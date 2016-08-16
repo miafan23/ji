@@ -7,8 +7,9 @@ var CalendarPlugin = require('rc-calendar');
 import classNames from 'classnames';
 import Task from './task';
 import TasksStore from '../stores/tasks';
-import ChangeTime from './changeTime';
 import DaysStore from '../stores/days';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+
 var Calendar = React.createClass({
   getInitialState() {
     return{}
@@ -17,7 +18,6 @@ var Calendar = React.createClass({
   render() {
     return(
       <div className="calendar-wrapper">
-        <ChangeTime />
         <ul className="tasks-name">
           {this.props.tasks.map((task,index) => {
             return <li key={index}>{task.task}</li>
@@ -49,9 +49,3 @@ var Calendar = React.createClass({
 });
 
 module.exports = Calendar;
-  // <th>{this.state.currentMonth}月</th>
-// {this.state.days.map((day) => {
-//   return <div key={day.date} className={day.className}>{day.week}</div>
-// })}
-//
-//        <Tasks {...this.state.days}/>

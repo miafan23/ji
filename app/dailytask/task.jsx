@@ -22,7 +22,7 @@ var task = React.createClass({
             'process-check': process[index] === 'check',
             'process-uncheck': process[index] === 'uncheck'
           });
-          return <td key={''+this.props.task._id+index} className={tdClass} onClick={() => this.handleClick(this.props.taskIndex, index, process[index])}></td>
+          return <td key={''+this.props.task._id+index} className={tdClass} onTouchTap={() => this.handleClick(this.props.taskIndex, index, process[index])}></td>
         })}
       </tr>
     )

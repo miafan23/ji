@@ -46,6 +46,10 @@ AppDispatcher.register((action) => {
       TasksStore.afterMonth();
       TasksStore.emitChange(); 
       break; 
+    case 'GO_TODAY':
+      DaysStore.goToday();
+      DaysStore.emitChange();
+      break;
     default:
       //
   }

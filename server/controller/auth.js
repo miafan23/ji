@@ -1,17 +1,27 @@
-// const Models = require('../lib/core');
-// const $User = Models.$User;
 'use strict'
+
 const validator = require('validator');
 const crypto = require('crypto');
 
 const UserModel = require('../models').User;
 
 exports.signup = function(req, res) {
-  let body = checkSignupBody(req);
-  if(!body){
-    return res.throw(400, 'error')
+  let body = req.body
+  if(!checkSignupBody(req)){
+    return res.status(403).send('error')
   };
-  UserModel.create(req.body);
+  UserModel.findOne({username: body.username}, function(err, user) {
+    console.log(err, user)
+    if (user) {
+      return res.status(403).send('USED');
+    }
+    body.username = validator.trim(body.username);
+    body.email = validator.trim(body.email);
+    body.password = md5(validator.trim(body.password));
+
+    UserModel.create(body);
+    return res.send('SAVED');
+  })
 }
 
 exports.login = function(req, res) {
@@ -21,18 +31,25 @@ exports.login = function(req, res) {
   UserModel.findOne({username: username})
     .exec((err, user) => {
       if (err) return console.log(err);
-      if (!user) return console.log('no user');
+      if (!user) return res.status(403).send('NO_USER');
       if(password !== user.password) {
-        return console.log('password err')
+        return res.status(403).send('PADSSWORD_ERR');
       }
       req.session.user = username;
       res.redirect('/');
-      console.log(req.session, 'eee');
     });
 }
 
+exports.logout = function(req, res) {
+  delete req.session.user;
+  res.redirect('/');
+}
+
+exports.getUser = function(req, res) {
+  res.send(req.session.user);
+}
+
 exports.checkLogin = function(req, res) {
-  console.log(req.session);
   if (req.session.user) {
     res.send('logged');
   } else {
@@ -45,7 +62,6 @@ function md5 (str) {
 }
 
 function checkSignupBody(req) {
-  console.log('sessionnnnnnn')
   var body = req.body;
   var flash;
   if (!body || !body.username) {
@@ -65,9 +81,8 @@ function checkSignupBody(req) {
     this.flash = flash;
     return false;
   }
-  body.username = validator.trim(body.username);
-  body.email = validator.trim(body.email);
-  body.password = md5(validator.trim(body.password));
-  return body;
+  return true;
+
 }
+
 // exports.getUserByName = ;
