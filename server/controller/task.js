@@ -8,7 +8,7 @@ exports.getUserTasks = function(req, res) {
   let monthId = req.params.monthId;
   // console.log(req.param, req)
   console.log(monthId)
-  TaskModel.find({user: user, monthId: monthId})
+  TaskModel.find({user: user, monthId: monthId, status: false})
     .exec((err, tasks) => {
       if (!err) {
         res.send(tasks);
@@ -50,6 +50,22 @@ exports.updateStatus = function(req, res) {
     task.save()
     res.send({message: 'SAVED'});
   })
+}
+
+exports.manageGetPendingTasks = function(req, res) {
+  let user = req.session.user;
+  let pendingTasks;
+  //找到正在进行的任务名
+  UserModel.findOne({username: user}, function(err, user) {
+    if (!user) { return false }
+    let tasks = user.tasks;
+    for (let i=0; i<tasks.length; i++){
+      if (tasks[i].status == false) {
+        pendingTasks.push(tasks[i]);
+      }
+    }
+    res.send(pendingTasks);
+  });
 }
 
 

@@ -57,7 +57,18 @@ const WebAPIUtils = {
         self.getUserTasksByMonthId(monthId);
       }
     })
-  }
+  },
+
+  manageGetPendingTasks() {
+    console.log('pending')
+    $.ajax({
+      url: '/api/manageGetPendingTasks',
+      type: 'GET'
+    })
+    .done((data) => {
+      console.log(data);
+    })
+  },
 }
 
 export default WebAPIUtils;

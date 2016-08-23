@@ -25,6 +25,8 @@ module.exports = function(app) {
   app.post('/api/addnewtask', loginRequired, TaskController.addNewTask);
   app.get('/api/usertasks/:monthId', loginRequired, TaskController.getUserTasks);
   app.put('/api/taskstatus/:id', loginRequired, TaskController.updateStatus);
+  app.get('/api/manageGetPendingTasks', loginRequired, TaskController.manageGetPendingTasks);
+  
   app.get('*', function (request, response){
     response.sendFile(path.resolve(__dirname, '../dist/','index.html'))
   })

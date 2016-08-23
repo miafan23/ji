@@ -1,5 +1,4 @@
 const EventEmitter = require('events').EventEmitter;
-// const assign = require('object-assign');
 import moment from 'moment';
 
 var TasksStore = Object.assign({}, EventEmitter.prototype, {
@@ -43,20 +42,16 @@ var TasksStore = Object.assign({}, EventEmitter.prototype, {
     }
   },
 
-  preMonth(){
-
-  },
-
-  afterMonth(){
-
-  },
-
   emitChange() {
-    this.emit('change');
+    this.emit('taskschange');
   },
 
   addChangeListener(callback) {
-    this.on('change', callback)
+    this.on('taskschange', callback)
+  },
+
+  removeChangeListener(e, callback) {
+    this.removeListener(e, callback);
   }
 });
 

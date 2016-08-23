@@ -32,14 +32,6 @@ const DaysStore = Object.assign({}, EventEmitter.prototype, {
 
   monthId: '' + now.year() + now.month(),
 
-  initialize() {
-    
-  },
-
-  initDays() {
-
-  },
-
   getDays() {
     return this.days;
   },
@@ -77,13 +69,19 @@ const DaysStore = Object.assign({}, EventEmitter.prototype, {
   },
 
   emitChange() {
-    this.emit('change');
+    this.emit('dayschange');
   },
 
   addChangeListener(callback) {
-    this.on('change', () => {
+    this.on('dayschange', () => {
       callback(this.monthId);
     })
+  },
+
+  removeChangeListener(e, callback) {
+    // this.removeListener(e, callback); 按callback的方式打死remove不掉 暂时先这样了
+    this.removeAllListeners();
   }
+
 })
 export default DaysStore;

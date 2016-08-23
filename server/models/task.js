@@ -7,7 +7,8 @@ const TaskSchema = new Schema({
   task: {type: String, required: true},
   monthId: {type: String, default: ''+moment().year()+moment().month()},
   user: {type: String, required: true},
-  process: {type: Array, default: new Array(31)}
+  process: {type: Array, default: new Array(31)},
+  status: {type: Boolean, default: 0} //设置任务的状态  默认0代表正在进行  1代表成就达成
 });
 
 // TaskSchema.plugin(passportLocalMongoose);

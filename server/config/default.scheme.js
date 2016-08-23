@@ -52,7 +52,7 @@ function checkLogin() {
 }
 
 function checkSignupBody() {
-  console.log('sessionnnnnnn')
+  // console.log('sessionnnnnnn')
   var body = this.request.body;
   var flash;
   if (!body || !body.username) {
@@ -67,7 +67,7 @@ function checkSignupBody() {
   else if (body.password !== body.re_password) {
     flash = {error: '两次密码不匹配!'};
   }
-  console.log(flash)
+  // console.log(flash)
   if (flash) {
     this.flash = flash;
     return this.throw(400, flash);

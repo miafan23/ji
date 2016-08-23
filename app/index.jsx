@@ -1,12 +1,17 @@
 const React = require('react');
 const ReactDom = require('react-dom');
 const Signup = require('./auth/signup');
-const Index = require('./index/index');
-import { Manage } from './auth/manage';
-const $ = require('jquery');
 import Login from './auth/login';
+
+import Manage from './manage/manage';
+import PendingTasks from './manage/pending';
+import FinishedTasks from './manage/finished';
+
+const Index = require('./index/index');
+import AppCom from './index/app';
+
+const $ = require('jquery');
 import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router'
-// import Register from './components/auth/signup';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {red100} from 'material-ui/styles/colors';
@@ -23,29 +28,18 @@ const muiTheme = getMuiTheme({
   },
 });
 
-
-// const App = () => (
-//   <MuiThemeProvider muiTheme={muiTheme}>
-//       <Router history={browserHistory}>
-//       <Route path="/">
-//         <IndexRoute onEnter={requireAuth} component={Index} />
-//         <Route path="login" component={Login} />
-//         <Route path="signup" component={Signup} />
-//         <Route path="manage" component={Manage} />
-//       </Route>
-//     </Router>
-//   </MuiThemeProvider>
-// )
-
 const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
-      <Router history={browserHistory}>
+    <Router history={browserHistory}>
       <Route path="/" component={AppCom}>
         <IndexRoute onEnter={requireAuth} component={Index} />
-        <Route path="login" component={Login} />
-        <Route path="signup" component={Signup} />
-        <Route path="manage" component={Manage} />
+        <Route path="/manage" component={Manage}>
+          <IndexRoute component={PendingTasks} />
+          <Route path="/manage/finished" component={FinishedTasks} />
+        </Route>
       </Route>
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
     </Router>
   </MuiThemeProvider>
 )

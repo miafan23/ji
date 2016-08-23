@@ -11,7 +11,6 @@ var ChangeTime = React.createClass({
 
   preWeek() {
     DaysActions.preWeek();
-    console.log('??')
   },
 
   afterWeek() {
