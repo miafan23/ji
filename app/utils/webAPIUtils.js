@@ -59,6 +59,69 @@ const WebAPIUtils = {
     })
   },
 
+  saveTask(oldtask, newtask) {
+    let self = this;
+    $.ajax({
+      url: '/api/editTask',
+      type: 'POST',
+      data: {
+        oldtask,
+        newtask
+      }
+    })
+    .done((res) => {
+      if (res === 'SAVED') {
+        console.log('SAVED');
+        self.getUserTasks();
+      }
+    })
+  },
+
+  deleteTask(id) {
+    let self = this;
+    $.ajax({
+      url: '/api/deleteTask',
+      type: 'DELETE',
+      data: {
+        id
+      }
+    })
+    .done(res => {
+      if (res === 'SAVED') {
+        self.getUserTasks();
+      }
+    })
+  },
+
+  finishTask(id) {
+    let self = this;
+    $.ajax({
+      url: '/api/finishTask',
+      type: 'PUT',
+      data: {
+        id
+      }
+    })
+    .done (res => {
+      if (res === 'SAVED') {
+        self.getUserTasks();
+        self.getFinishedTask;
+      }
+    })
+  },
+
+  getFinishedTask() {
+    let self = this;
+    $.ajax({
+      url: '/api/getFinishedTasks',
+      type: 'GET',
+    })
+    .done ( tasks => {
+      console.log(tasks,'finished')
+      TaskActions.updateFinishedTasks(tasks);
+    })
+  },
+
   manageGetPendingTasks() {
     console.log('pending')
     $.ajax({

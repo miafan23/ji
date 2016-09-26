@@ -18,13 +18,13 @@ var ChangeTime = React.createClass({
   },
 
   preMonth() {
-    DaysActions.preMonth();
     TaskActions.preMonth();
+    DaysActions.preMonth();
   },
 
   afterMonth() {
-    DaysActions.afterMonth();
     TaskActions.afterMonth();
+    DaysActions.afterMonth();
   },
 
   goToday() {

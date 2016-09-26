@@ -8,6 +8,8 @@ var TasksStore = Object.assign({}, EventEmitter.prototype, {
     process: new Array(31)
   }],
 
+  finishedTasks: [],
+
   initializeTasks(tasks) {
     this.tasks = tasks;
   },
@@ -18,6 +20,15 @@ var TasksStore = Object.assign({}, EventEmitter.prototype, {
 
   getAllTasks() {
     return this.tasks;
+  },
+
+  getFinishedTasks() {
+    return this.finishedTasks;
+  },
+
+  updateFinishedTasks(finishedTasks) {
+    console.log(finishedTasks, "updateTasks");
+    this.finishedTasks = finishedTasks;
   },
 
   addNewTaskHandler(task) {
@@ -40,6 +51,14 @@ var TasksStore = Object.assign({}, EventEmitter.prototype, {
       default:
         this.tasks[taskIndex].process[index] = 'check';
     }
+  },
+
+  preMonth(){
+
+  },
+
+  afterMonth(){
+
   },
 
   emitChange() {

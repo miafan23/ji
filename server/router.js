@@ -26,7 +26,11 @@ module.exports = function(app) {
   app.get('/api/usertasks/:monthId', loginRequired, TaskController.getUserTasks);
   app.put('/api/taskstatus/:id', loginRequired, TaskController.updateStatus);
   app.get('/api/manageGetPendingTasks', loginRequired, TaskController.manageGetPendingTasks);
-  
+  app.post('/api/editTask', loginRequired, TaskController.editTask);
+  app.delete('/api/deleteTask', loginRequired, TaskController.deleteTask);
+  app.put('/api/finishTask', loginRequired, TaskController.finishTask);
+  app.get('/api/getFinishedTasks', loginRequired, TaskController.getFinishedTasks);
+
   app.get('*', function (request, response){
     response.sendFile(path.resolve(__dirname, '../dist/','index.html'))
   })

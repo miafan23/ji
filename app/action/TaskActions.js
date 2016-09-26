@@ -15,6 +15,13 @@ const TaskActions = {
     })
   },
 
+  updateFinishedTasks(finishedTasks) {
+    AppDispatcher.dispatch({
+      actionType: 'UPDATE_FINISHED_TASKS',
+      finishedTasks
+    })
+  },
+
   addNewTask(task) {
     AppDispatcher.dispatch({
       actionType: 'ADD_NEW_TASK',

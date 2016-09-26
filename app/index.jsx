@@ -37,6 +37,7 @@ const App = () => (
           <IndexRoute component={PendingTasks} />
           <Route path="/manage/finished" component={FinishedTasks} />
         </Route>
+        <Route path="/finished" component={FinishedTasks} />
       </Route>
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />

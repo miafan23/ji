@@ -20,6 +20,7 @@ var AppCom = React.createClass({
   componentDidMount() {
     let self = this;
     webAPIUtils.getUserTasks();
+    webAPIUtils.getFinishedTask();
     $.ajax({
       'url': '/api/getuser',
       'type': 'GET'
@@ -72,8 +73,8 @@ var AppCom = React.createClass({
             </MenuItem>
           </Link>
           <MenuItem onTouchTap={this.logout}>登出</MenuItem>
-          <Link to="/manage" className="menu">
-            <MenuItem onTouchTap={this.handleClose}>管理我的任务</MenuItem>
+          <Link to="/finished" className="menu">
+            <MenuItem onTouchTap={this.handleClose}>我已经完成的任务</MenuItem>
           </Link>
         </Drawer>
 

@@ -33,6 +33,7 @@ var Index = React.createClass({
   },
 
   _onChange() {
+    console.log('change')
     this.setState({
       tasks: TasksStore.getAllTasks()
     })
@@ -43,7 +44,7 @@ var Index = React.createClass({
       days: DaysStore.getDays(),
       monthId: monthId
     });
-    // webAPIUtils.getUserTasksByMonthId(monthId)
+    webAPIUtils.getUserTasksByMonthId(monthId)
   },
 
   componentWillUnmount() {

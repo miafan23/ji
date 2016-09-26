@@ -14,6 +14,10 @@ AppDispatcher.register((action) => {
       TasksStore.updateTasks(action.tasks);
       TasksStore.emitChange();
       break;
+    case 'UPDATE_FINISHED_TASKS':
+      TasksStore.updateFinishedTasks(action.finishedTasks);
+      TasksStore.emitChange();
+      break;
     case 'ADD_NEW_TASK':
       TasksStore.addNewTaskHandler(action.task);
       TasksStore.emitChange();

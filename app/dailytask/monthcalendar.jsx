@@ -27,7 +27,10 @@ var Calendar = React.createClass({
           <tbody>
           <tr>
             {this.props.days.map((day) => {
-              return <th key={day.date} className={classNames({'mobile-hide': !day.isCurrentWeek})}>{day.date}</th>
+              return <th key={day.date}
+                         className={classNames({'mobile-hide': !day.isCurrentWeek})}>
+                         {day.date}
+                     </th>
             })}
           </tr>
           {this.props.tasks.map((task, index) => {
