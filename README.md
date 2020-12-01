@@ -1,6 +1,6 @@
 # 几
 ##### 一个帮你养成好的小习惯的web app
-使用请戳 -> [几](http://fiona23.github.io/ji/)
+使用请戳 -> [几](http://miafan23.github.io/ji/)
 
 开发进度及计划
 - [x] 基本功能
